@@ -4,10 +4,14 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [SchoolEntity::class],
-    version = 1
+    entities = [
+        SchoolEntity::class,
+        FavoriteEntity::class
+               ],
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun schoolDao(): SchoolDao
+    abstract fun favoriteDao(): FavoriteDao
 }
 

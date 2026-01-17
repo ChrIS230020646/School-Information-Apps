@@ -44,5 +44,19 @@ class SchoolViewModel(
             }
         }
     }
+
+    val favorites: StateFlow<Set<String>> =
+        repository.observeFavorites()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptySet()
+            )
+
+    fun toggleFavorite(name: String) {
+        viewModelScope.launch {
+            repository.toggleFavorite(name)
+        }
+    }
 }
 
