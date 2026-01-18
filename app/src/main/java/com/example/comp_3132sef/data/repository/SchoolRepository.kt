@@ -22,12 +22,24 @@ class SchoolRepository(context: Context) {
     suspend fun refreshSchools() {
         val remote = ApiClient.schoolApi.getSchools()
         val entities = remote
-            .mapNotNull { it.englishName }
-            .map { SchoolEntity(it) }
+            .filter { it.englishName != null && it.latitude != null && it.longitude != null }
+            .map {
+                SchoolEntity(
+                    englishName = it.englishName!!,
+                    latitude = it.latitude!!,
+                    longitude = it.longitude!!
+                )
+            }
 
         schoolDao.clearAll()
         schoolDao.insertAll(entities)
     }
+
+    fun observeSchoolLocations(): Flow<List<SchoolEntity>> =
+        schoolDao.observeSchools()
+
+    fun observeSchoolEntities(): Flow<List<SchoolEntity>> =
+        schoolDao.observeSchools()
 
     fun observeFavorites(): Flow<Set<String>> =
         favoriteDao.observeFavorites()

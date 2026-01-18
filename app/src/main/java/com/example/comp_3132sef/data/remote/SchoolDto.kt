@@ -7,5 +7,11 @@ data class SchoolDto(
     val englishName: String?,
 
     @Json(name = "中文名稱")
-    val chineseName: String?
+    val chineseName: String?,
+
+    @Json(name = "LATITUDE")
+    val latitude: Double?,
+
+    @Json(name = "LONGITUDE")
+    val longitude: Double?
 )

@@ -11,6 +11,13 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import com.example.comp_3132sef.data.local.SchoolEntity
+import kotlin.math.asin
+import kotlin.math.sin
+import kotlin.math.cos
+import kotlin.math.sqrt
+import kotlin.math.pow
+
 
 class SchoolViewModel(
     application: Application
@@ -58,5 +65,39 @@ class SchoolViewModel(
             repository.toggleFavorite(name)
         }
     }
+
+    fun distanceInKm(
+        lat1: Double, lon1: Double,
+        lat2: Double, lon2: Double
+    ): Double {
+
+        val r = 6371.0
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a =
+            sin(dLat / 2).pow(2.0) +
+                    cos(Math.toRadians(lat1)) *
+                    cos(Math.toRadians(lat2)) *
+                    sin(dLon / 2).pow(2.0)
+        return 2 * r * asin(sqrt(a))
+
+    }
+
+    val schoolsFromDb: StateFlow<List<SchoolEntity>> =
+        repository.observeSchoolEntities()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
+/*
+    val nearestSchools = schools
+        .sortedBy {
+            distanceInKm(
+                userLat, userLng,
+                it.latitude, it.longitude
+            )
+        }
+        .take(5)  */
 }
 
