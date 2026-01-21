@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">學校資訊App</string>
+
+    <string name="open_in_maps">在地圖開啟</string>
+    <string name="navigate">導航</string>
+    <string name="back">返回</string>
+    <string name="back_to_list">返回列表</string>
+    <string name="loading_schools">載入學校資料中…</string>
+</resources>

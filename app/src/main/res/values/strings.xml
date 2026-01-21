@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">COMP_3132SEF</string>
+    <string name="app_name">School Information App</string>
+
+    <string name="open_in_maps">Open in Maps</string>
+    <string name="navigate">Navigate</string>
+    <string name="back">Back</string>
+    <string name="back_to_list">Back to List</string>
+    <string name="loading_schools">Loading schools...</string>
 </resources>

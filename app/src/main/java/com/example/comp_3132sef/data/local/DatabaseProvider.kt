@@ -13,9 +13,11 @@ object DatabaseProvider {
                 context.applicationContext,
                 AppDatabase::class.java,
                 "school_db"
-            ).fallbackToDestructiveMigration().build().also {
-                INSTANCE = it
-            }
+            )
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .fallbackToDestructiveMigration()
+                .build()
+                .also { INSTANCE = it }
         }
     }
 }

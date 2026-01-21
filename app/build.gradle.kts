@@ -93,7 +93,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
 
     // MapLibre (OpenStreetMap)
-    implementation("org.maplibre.gl:android-sdk:10.0.2")
+    //implementation("org.maplibre.gl:android-sdk:10.0.2")
+    //implementation("com.mapbox.maps:android:10.15.0")
 
     // Location
     implementation("com.google.android.gms:play-services-location:21.0.1")

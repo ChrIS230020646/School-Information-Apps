@@ -21,11 +21,14 @@ class SchoolRepository(context: Context) {
 
     suspend fun refreshSchools() {
         val remote = ApiClient.schoolApi.getSchools()
+
         val entities = remote
             .filter { it.englishName != null && it.latitude != null && it.longitude != null }
             .map {
                 SchoolEntity(
+                    id = it.englishName!!,
                     englishName = it.englishName!!,
+                    chineseName = it.chineseName,
                     latitude = it.latitude!!,
                     longitude = it.longitude!!
                 )

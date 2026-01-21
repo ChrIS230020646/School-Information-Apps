@@ -5,8 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "schools")
 data class SchoolEntity(
-    @PrimaryKey
+    @PrimaryKey val id: String,
     val englishName: String,
+    val chineseName: String?,
     val latitude: Double,
     val longitude: Double
 )

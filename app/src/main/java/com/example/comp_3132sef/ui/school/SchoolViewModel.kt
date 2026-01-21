@@ -17,16 +17,35 @@ import kotlin.math.sin
 import kotlin.math.cos
 import kotlin.math.sqrt
 import kotlin.math.pow
-
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class SchoolViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
+    private val _selectedSchool = MutableStateFlow<SchoolEntity?>(null)
+    val selectedSchool: StateFlow<SchoolEntity?> = _selectedSchool
+
+    fun openSchoolMap(school: SchoolEntity) {
+        _selectedSchool.value = school
+    }
+
+    fun closeSchoolMap() {
+        _selectedSchool.value = null
+    }
+
     private val repository = SchoolRepository(application)
 
     val schools: StateFlow<List<String>> =
         repository.observeSchools()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
+
+    val schoolEntities: StateFlow<List<SchoolEntity>> =
+        repository.observeSchoolEntities()
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
@@ -90,14 +109,5 @@ class SchoolViewModel(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = emptyList()
             )
-/*
-    val nearestSchools = schools
-        .sortedBy {
-            distanceInKm(
-                userLat, userLng,
-                it.latitude, it.longitude
-            )
-        }
-        .take(5)  */
 }
 
