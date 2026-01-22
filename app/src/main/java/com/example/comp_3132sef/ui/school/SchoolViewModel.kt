@@ -19,6 +19,7 @@ import kotlin.math.sqrt
 import kotlin.math.pow
 import kotlinx.coroutines.flow.MutableStateFlow
 
+
 class SchoolViewModel(
     application: Application
 ) : AndroidViewModel(application) {
@@ -35,7 +36,7 @@ class SchoolViewModel(
     }
 
     private val repository = SchoolRepository(application)
-
+//  Leftover code?
     val schools: StateFlow<List<String>> =
         repository.observeSchools()
             .stateIn(

@@ -38,7 +38,19 @@ fun SchoolDetailScreen(
         Text(text = "Lng: ${school.longitude}")
 
         Spacer(modifier = Modifier.height(16.dp))
+        if (school.website != null) {
+            Button(
+                onClick = {
+                    val uri = Uri.parse(school.website)
+                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(stringResource(R.string.school_website)) // Add a string resource for the button label
+            }
 
+            Spacer(modifier = Modifier.height(8.dp))
+        }
         Button(
             onClick = {
                 val label = URLEncoder.encode(school.englishName, "UTF-8")

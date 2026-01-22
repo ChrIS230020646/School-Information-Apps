@@ -13,5 +13,8 @@ data class SchoolDto(
     val latitude: Double?,
 
     @Json(name = "LONGITUDE")
-    val longitude: Double?
+    val longitude: Double?,
+
+    @Json(name = "WEBSITE")
+    val website: String?
 )

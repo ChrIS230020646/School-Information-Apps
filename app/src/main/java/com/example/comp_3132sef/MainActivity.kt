@@ -22,7 +22,6 @@ import com.example.comp_3132sef.ui.school.SchoolViewModel
 import com.example.comp_3132sef.ui.theme.COMP_3132SEFTheme
 import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

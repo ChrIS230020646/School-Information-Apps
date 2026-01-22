@@ -1,12 +1,14 @@
 package com.example.comp_3132sef.data.repository
 
 import android.content.Context
+import androidx.compose.runtime.Composable
 import com.example.comp_3132sef.data.local.DatabaseProvider
 import com.example.comp_3132sef.data.local.FavoriteEntity
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.data.remote.ApiClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+
 
 class SchoolRepository(context: Context) {
 
@@ -30,7 +32,8 @@ class SchoolRepository(context: Context) {
                     englishName = it.englishName!!,
                     chineseName = it.chineseName,
                     latitude = it.latitude!!,
-                    longitude = it.longitude!!
+                    longitude = it.longitude!!,
+                    website = it.website!!,
                 )
             }
 

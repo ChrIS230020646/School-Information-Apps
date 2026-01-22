@@ -9,6 +9,7 @@ data class SchoolEntity(
     val englishName: String,
     val chineseName: String?,
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
+    val website: String?,
 )
 
