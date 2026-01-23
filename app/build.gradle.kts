@@ -98,4 +98,9 @@ dependencies {
 
     // Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    // get website icon
+    implementation("org.jsoup:jsoup:1.14.1")
+    // display  icon
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    kapt ("com.github.bumptech.glide:compiler:4.12.0")
 }

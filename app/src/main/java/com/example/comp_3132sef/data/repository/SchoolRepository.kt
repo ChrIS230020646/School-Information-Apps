@@ -28,7 +28,7 @@ class SchoolRepository(context: Context) {
                 SchoolEntity(
                     id = it.englishName!!,
                     englishName = it.englishName!!,
-                    chineseName = it.chineseName!!,
+                    chineseName = it.chineseName,
                     latitude = it.latitude!!,
                     longitude = it.longitude!!,
                     englishCategory =it.englishCategory!!,

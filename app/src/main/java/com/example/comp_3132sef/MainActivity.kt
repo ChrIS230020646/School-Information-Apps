@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.comp_3132sef.ui.school.SchoolViewModel
 import com.example.comp_3132sef.ui.theme.COMP_3132SEFTheme
 import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
@@ -31,16 +32,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
-
-
         setContent {
             COMP_3132SEFTheme {
                 MainScreen()
             }
         }
-
     }
 }
 
@@ -154,25 +151,5 @@ fun SchoolListScreen(
     }
 
 
-//    @Composable
-//    fun SchoolListScreen(navController: NavController) {
-//        Scaffold(
-//            // 1. 定義懸浮按鈕
-//            floatingActionButton = {
-//                FloatingActionButton(
-//                    onClick = {
-//                        // 2. 點擊後的導航邏輯，跳轉到 "add_school" 頁面
-//                        navController.navigate("add_school")
-//                    },
-//                    containerColor = MaterialTheme.colorScheme.primary,
-//                    contentColor = MaterialTheme.colorScheme.onPrimary
-//                ) {
-//                    Icon(Icons.Filled.Add, contentDescription = "新增學校")
-//                }
-//            },
-//            // 按鈕的位置（可選，預設在右下角）
-//            floatingActionButtonPosition = FabPosition.End,
-//            content = TODO()
-//        )
-//    }
+
 }

@@ -24,3 +24,4 @@ data class SchoolEntity(
     val latitude: Double?,
     val longitude: Double?
 )
+
