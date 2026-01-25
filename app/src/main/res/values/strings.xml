@@ -7,4 +7,10 @@
     <string name="back_to_list">Back to List</string>
     <string name="loading_schools">Loading schools...</string>
     <string name="school_website">School Website</string>
+    <string name="na" translatable="false">N/A</string>
+    <string name="Address" >Address</string>
+    <string name="Phone_No" >Phone Number</string>
+    <string name="District" >District</string>
+    <string name="Religion" >Religion</string>
+    <string name="Category" >Category</string>
 </resources>

@@ -7,4 +7,9 @@
     <string name="back_to_list">返回列表</string>
     <string name="loading_schools">載入學校資料中…</string>
     <string name="school_website">學校網址</string>
+    <string name="Address" >地址</string>
+    <string name="Phone_No" >電話</string>
+    <string name="District" >分區</string>
+    <string name="Religion" >宗教</string>
+    <string name="Category" >類型</string>
 </resources>

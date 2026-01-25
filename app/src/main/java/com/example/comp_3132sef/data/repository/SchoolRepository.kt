@@ -43,6 +43,7 @@ class SchoolRepository(context: Context) {
                     chineseReligion =it.chineseReligion,
                     studentsGender =it.studentsGender,
                     chineseStudentsGender=it.chineseStudentsGender,
+                    chineseSession = it.chineseSession,
                     session =it.session
                 )
             }

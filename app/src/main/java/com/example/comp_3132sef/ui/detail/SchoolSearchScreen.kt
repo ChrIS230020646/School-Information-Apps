@@ -9,11 +9,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
+import okhttp3.Address
+import java.util.Locale
 
 @Composable
 fun SchoolSearchScreen(viewModel: SearchSchoolViewModel) {
@@ -53,21 +57,51 @@ fun SchoolSearchScreen(viewModel: SearchSchoolViewModel) {
 }
 @Composable
 fun SchoolCard(school: SchoolEntity) {
+    val isZh = Locale.getDefault().language == "zh"
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            school.chineseName?.let { Text(text = it, fontSize = 20.sp, fontWeight = FontWeight.Bold) }
-            Text(text = school.englishName, fontSize = 14.sp, color = Color.Gray)
+
+            val displayName1 =
+                if (isZh) (school.chineseName ?: school.englishName)
+                else school.englishName
+            val displayName2 =
+                if (isZh) (school.englishName ?: school.chineseName)
+                else school.chineseName
+            displayName1.let {
+                if (it != null) {
+                    Text(text = it, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+            if (displayName2 != null) {
+                Text(text = displayName2, fontSize = 14.sp, color = Color.Gray)
+            }
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-
-            DetailRow("地址", school.chineseAddress!!)
-            DetailRow("電話", school.telephone!!)
-            DetailRow("分區", school.chineseDistrict!!)
-            DetailRow("宗教", school.chineseReligion!!)
-            DetailRow("類型", "${school.chineseCategory} (${school.session})")
+            val address =
+                if (isZh) (school.chineseAddress ?: school.englishAddress)
+                else school.englishAddress
+            if (address != null) {
+                DetailRow(stringResource(R.string.Address), address)
+            }
+            DetailRow(stringResource(R.string.Phone_No), school.telephone!!)
+            val district = if (isZh) (school.chineseDistrict ?: school.district)
+            else school.district
+            if (district != null) {
+                DetailRow(stringResource(R.string.District), district)
+            }
+            val religion = if (isZh) (school.chineseReligion ?: school.religion)
+            else school.religion
+            if (religion != null) {
+                DetailRow(stringResource(R.string.Religion), religion)
+            }
+            val Category = if (isZh) (school.chineseCategory ?: school.englishCategory)
+        else school.englishCategory
+            val Session = if (isZh) (school.chineseSession ?: school.session)
+            else school.session
+            DetailRow(stringResource(R.string.Category), "${Category} (${Session})")
 
             Text(
                 text = school.website!!,

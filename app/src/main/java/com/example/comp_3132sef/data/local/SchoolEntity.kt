@@ -21,6 +21,7 @@ data class SchoolEntity(
     val studentsGender: String?,
     val chineseStudentsGender: String?,
     val session: String?,
+    val chineseSession: String?,
     val latitude: Double?,
     val longitude: Double?
 )
