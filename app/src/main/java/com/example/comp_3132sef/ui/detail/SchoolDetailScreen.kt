@@ -31,7 +31,7 @@ fun SchoolDetailScreen(
     val context = LocalContext.current
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = school.englishName)
+        school.englishName?.let { Text(text = it) }
 
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = "Lat: ${school.latitude}")
