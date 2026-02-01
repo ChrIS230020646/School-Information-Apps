@@ -18,6 +18,7 @@ import kotlin.math.cos
 import kotlin.math.sqrt
 import kotlin.math.pow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlin.String
 
 
 class SchoolViewModel(
@@ -52,6 +53,14 @@ class SchoolViewModel(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = emptyList()
             )
+    fun getSchoolEntities(schoolIds: Set<String>): StateFlow<List<SchoolEntity>> {
+        return repository.observeSchoolEntities(schoolIds)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
+    }
 
     fun Context.isOnline(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
