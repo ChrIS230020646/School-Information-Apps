@@ -27,5 +27,22 @@ interface SchoolDao {
         OR chineseDistrict LIKE '%' || :query || '%'
     """)
     fun searchSchools(query: String): Flow<List<SchoolEntity>>
+
+
+    @Query("SELECT * FROM schools WHERE ID IN (:schoolIds)")
+    fun getSchoolsByIds(schoolIds: Set<String>): Flow<List<SchoolEntity>>
+
+    @Query("""
+        SELECT * FROM schools 
+        WHERE ID = :ID 
+    """)
+    fun getSchoolsByID(ID: String): Flow<List<SchoolEntity>>
+
+//    @Query("""
+//    SELECT schools.*
+//    FROM schools
+//    INNER JOIN favorites ON schools.englishName = favorites.englishName
+//""")
+//    fun getAllFavoriteSchoolsInfo(): Flow<List<SchoolEntity>>
 }
 
