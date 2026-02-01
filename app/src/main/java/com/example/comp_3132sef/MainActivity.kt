@@ -26,7 +26,6 @@ import java.util.Locale
 
 import android.content.Intent
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -89,7 +88,7 @@ fun SchoolListScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = displayName,
+                    text = displayName!!,
                     modifier = Modifier.weight(1f)
                 )
 
