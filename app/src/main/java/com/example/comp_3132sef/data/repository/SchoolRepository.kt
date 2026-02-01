@@ -19,6 +19,9 @@ class SchoolRepository(context: Context) {
         schoolDao.observeSchools()
             .map { list -> list.map { it.englishName } }
 
+//    fun observeFavoritesSchoolsInfo(): Flow<List<String>> =
+//        schoolDao.getAllFavoriteSchoolsInfo()
+//            .map { list -> list.map { it.englishName } }
     suspend fun refreshSchools() {
         val remote = ApiClient.schoolApi.getSchools()
 
@@ -27,7 +30,7 @@ class SchoolRepository(context: Context) {
             .map {
                 SchoolEntity(
                     id = it.englishName!!,
-                    englishName = it.englishName!!,
+                    englishName = it.englishName,
                     chineseName = it.chineseName,
                     latitude = it.latitude!!,
                     longitude = it.longitude!!,
@@ -58,6 +61,11 @@ class SchoolRepository(context: Context) {
     fun observeSchoolEntities(): Flow<List<SchoolEntity>> =
         schoolDao.observeSchools()
 
+//    fun observeFavoritesSchoolsInfoEntities(): Flow<List<SchoolEntity>> =
+//        schoolDao.getAllFavoriteSchoolsInfo()
+
+fun observeSchoolEntities(schoolIds: Set<String>): Flow<List<SchoolEntity>> =
+    schoolDao.getSchoolsByIds(schoolIds)
     fun observeFavorites(): Flow<Set<String>> =
         favoriteDao.observeFavorites()
             .map { list -> list.map { it.englishName }.toSet() }
