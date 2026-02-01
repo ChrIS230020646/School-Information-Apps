@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import com.example.comp_3132sef.data.local.SchoolDao
 
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -30,7 +29,7 @@ class SearchSchoolViewModel(application: Application) : AndroidViewModel(applica
         .flatMapLatest { query -> schoolDao.searchSchools(query) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    fun onQueryChange(newQuery: String) {
+    fun onSearchQueryChange(newQuery: String) {
         _searchQuery.value = newQuery
     }
 
