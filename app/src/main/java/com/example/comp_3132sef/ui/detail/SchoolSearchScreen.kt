@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.sp
 import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
-import okhttp3.Address
 import java.util.Locale
 
 @Composable
@@ -34,7 +33,8 @@ fun SchoolSearchScreen(viewModel: SearchSchoolViewModel) {
         // 搜索欄
         OutlinedTextField(
             value = query,
-            onValueChange = { viewModel.onQueryChange(it) },
+
+            onValueChange = { viewModel.onSearchQueryChange(it) },
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text("輸入名稱、地址或電話...") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
@@ -71,7 +71,7 @@ fun SchoolCard(school: SchoolEntity) {
                 if (isZh) (school.englishName ?: school.chineseName)
                 else school.chineseName
             displayName1.let {
-                if (it != null) {
+                if (!(it.isEmpty())) {
                     Text(text = it, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 }
             }
