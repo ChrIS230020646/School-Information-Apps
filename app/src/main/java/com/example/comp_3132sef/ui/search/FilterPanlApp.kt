@@ -95,7 +95,7 @@ fun FilterPanelApp(
             itemsIndexed(sessionList) { index, label ->
                 FilterRow(label, sessionChecked[index]) { isChecked ->
                     sessionChecked = sessionChecked.toMutableList().apply { this[index] = isChecked }
-             n   }
+                }
             }
 
             // Genders
