@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.*
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.data.repository.SchoolRepository
 
-@Database(entities = [SchoolEntity::class], version = 1)
-abstract class SchoolDatabase : RoomDatabase() {
-    abstract fun schoolDao(): SchoolDao
-}
+//@Database(entities = [SchoolEntity::class], version = 1)
+//abstract class SchoolDatabase : RoomDatabase() {
+//    abstract fun schoolDao(): SchoolDao
+//}
 
 class SearchSchoolViewModel(application: Application) : AndroidViewModel(application) {
     private val _searchQuery = MutableStateFlow("")

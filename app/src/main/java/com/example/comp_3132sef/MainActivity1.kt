@@ -23,8 +23,10 @@ import com.example.comp_3132sef.ui.school.SchoolViewModel
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
 import java.util.Locale
 import androidx.compose.ui.graphics.Color
+import androidx.room.util.getColumnIndex
 import com.example.comp_3132sef.ui.detail.FavItemList
-import com.example.comp_3132sef.ui.detail.searchBarCompose
+import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
+import com.example.comp_3132sef.ui.search.searchBarCompose
 
 class MainActivity1 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +46,6 @@ class MainActivity1 : ComponentActivity() {
 
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,7 +120,11 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel = viewModel(), viewModel2: 
             }
         }
     }
-    searchBarCompose(viewModel, viewModel2,isZh)
+    Row(){
+
+        searchBarCompose(viewModel, viewModel2,isZh)
+
+    }
 
 }
 
@@ -129,48 +134,48 @@ fun MoveToFavPage() {
 }
 
 //@Composable
-fun mappingToChooseResult(selectedSchool: SchoolEntity?,viewModel2: SchoolViewModel,school: SchoolEntity){
-
-    if (selectedSchool != null) {
-        viewModel2.closeSchoolMap()}
-    viewModel2.openSchoolMap(school)
-}
+//fun mappingToChooseResult(selectedSchool: SchoolEntity?,viewModel2: SchoolViewModel,school: SchoolEntity){
+//
+//    if (selectedSchool != null) {
+//        viewModel2.closeSchoolMap()}
+//    viewModel2.openSchoolMap(school)
+//}
 
 
 
 /**
 LazyListScope 的擴充函式 (Extension Function)，
  */
-fun LazyListScope.filteredListIsEmpty() {
-    item {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                "找不到結果",
-                color = MaterialTheme.colorScheme.outline
-            )
-        }
-    }
-}
+//fun LazyListScope.filteredListIsEmpty() {
+//    item {
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp),
+//            contentAlignment = Alignment.Center
+//        ) {
+//            Text(
+//                "找不到結果",
+//                color = MaterialTheme.colorScheme.outline
+//            )
+//        }
+//    }
+//}
 
 
 
-fun getNameListItemsToLists(inputList: MutableList<String>, list: List<SchoolEntity>, isEnglish: Boolean) {
-    // 使用 forEach 遍歷 schools2，並將名稱加入 inputList
-    if(isEnglish){
-        list.forEach { school ->
-            inputList.add(school.englishName)
-        }
-    }else{
-        list.forEach { school ->
-            inputList.add(school.chineseName ?: school.englishName)
-        }
-    }
-}
+//fun getNameListItemsToLists(inputList: MutableList<String>, list: List<SchoolEntity>, isEnglish: Boolean) {
+//    // 使用 forEach 遍歷 schools2，並將名稱加入 inputList
+//    if(isEnglish){
+//        list.forEach { school ->
+//            inputList.add(school.englishName)
+//        }
+//    }else{
+//        list.forEach { school ->
+//            inputList.add(school.chineseName ?: school.englishName)
+//        }
+//    }
+//}
 
 
 

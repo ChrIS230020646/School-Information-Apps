@@ -88,7 +88,7 @@ fun SchoolListScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = displayName!!,
+                    text = displayName,
                     modifier = Modifier.weight(1f)
                 )
 
