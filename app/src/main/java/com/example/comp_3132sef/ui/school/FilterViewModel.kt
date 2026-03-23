@@ -24,13 +24,7 @@ class FilterViewModel(application: Application) : AndroidViewModel(application) 
     private val db = DatabaseProvider.getDatabase(application)
     private val schoolDao = db.schoolDao()
 
-//    val schoolSessionEntities: StateFlow<List<SchoolsSessionEntity>> =
-//        repository.observeSchoolsCategory()
-//            .stateIn(
-//                scope = viewModelScope,
-//                started = SharingStarted.WhileSubscribed(5_000),
-//                initialValue = emptyList()
-//            )
+
 
     val getSchoolsCategoryEntity: StateFlow<List<SchoolsCategoryEntity>> =
         repository.observeSchoolsCategory()
