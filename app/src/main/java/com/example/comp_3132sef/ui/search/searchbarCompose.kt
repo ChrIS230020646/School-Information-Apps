@@ -14,9 +14,9 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,9 +32,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
+import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
 import com.example.comp_3132sef.ui.school.FilterViewModel
 //import com.example.comp_3132sef.filteredListIsEmpty
 //import com.example.comp_3132sef.getNameListItemsToLists
@@ -43,38 +46,75 @@ import com.example.comp_3132sef.ui.school.SchoolViewModel
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
 import kotlin.collections.forEach
 
+val schoolsNameList = mutableListOf<String>()
+//getNameListItemsToLists(schoolsNameList, schools2, !isZh)
+val filteredList = schoolsNameList
+//val viewModel3: FilterViewModel = viewModel()
+//var currencySelectedFilters by remember { mutableStateOf<Map<String, List<String>>>(emptyMap()) }
+//val filterCheckedSet = rememberFilterCheckedSet(viewModel3, isZh)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun searchBarCompose(viewModel:SearchSchoolViewModel, viewModel2: SchoolViewModel,isZh:Boolean) {
+fun searchBarCompose(viewModel:SearchSchoolViewModel,
+//                     viewModel3: FilterViewModel = viewModel(),
+                     searchActive:Boolean,
+                     btnActive:Boolean,
+
+                     onClickResult:Boolean,
+                     selectSchool: SchoolEntity?,
+                     viewModel2: SchoolViewModel, isZh:Boolean,
+                     onSearchActiveChange: (Boolean) -> Unit,
+                     onfilterActiveChange: (Boolean) -> Unit,
+                     onClickResultChange: (Boolean) -> Unit,
+                     onSelectSchoolChange: (SchoolEntity) -> Unit,
+                     onSearch: () -> Unit) {
     val query by viewModel.searchQuery.collectAsState()
-    val schools2 by viewModel.searchResults.collectAsState()
-    val selectedSchool by viewModel2.selectedSchool.collectAsState()
-    var searchActive by remember { mutableStateOf(false) }
-    var btnActive by remember { mutableStateOf(false) }
-    val schoolsNameList = mutableListOf<String>()
-    getNameListItemsToLists(schoolsNameList, schools2, !isZh)
-    val filteredList = schoolsNameList
+    val searchResults by viewModel.searchResults.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+//    val selectedSchool by viewModel2.selectedSchool.collectAsState()
+//    val searchActive=searchActive
+//    var searchActive by remember { mutableStateOf(false) }
+//    var btnActive by remember { mutableStateOf(false) }
+
+//    val schoolsNameList = mutableListOf<String>()
+    getNameListItemsToLists(schoolsNameList, searchResults, !isZh)
+//    val filteredList = schoolsNameList
     val viewModel3: FilterViewModel = viewModel()
+    var currencySelectedFilters by remember { mutableStateOf<Map<String, List<String>>>(emptyMap()) }
+    val filterCheckedSet = rememberFilterCheckedSet(viewModel3, isZh)
+
+//    var selectSchool by remember { mutableStateOf<SchoolEntity?>(null) }
+//    if(onClickResult && selectSchool !=null)
+//        if (onClickResult && selectSchool != null) {
+//            // 使用 !! 強制轉型，因為前面已經檢查過 selectSchool != null
+//            // Use !! because we already checked selectSchool != null above
+//            mappingToChooseResult(
+//                selectedSchool = selectSchool!!,
+//                viewModel2 = viewModel2,
+//                school= selectSchool!!
+//            )
+//
+//        }
     if(btnActive) {
         FilterPanelApp(
-            viewModel = viewModel3,
+//            viewModel = viewModel3,
             isZh = isZh,
+            filterCheckedSet=filterCheckedSet,
+            selectSet=currencySelectedFilters,
             onBack = {
-                // 這裡如果只是想關閉 Filter 介面，改用這個：
-                btnActive = false
-                // 如果是要退回上一個手機頁面，才用：navController.popBackStack()
+
+                onfilterActiveChange(false)
             },
             onConfirm = { selectedFilters ->
                 // 1. 執行你的搜尋邏輯
                 println("User selected: $selectedFilters")
-                // 2. 關閉篩選面板
-                btnActive = false
-                // 3. (選填) 如果想跳到結果頁：
-                // navController.navigate("result_screen")
-            }
-        )
-    }else{
+                currencySelectedFilters=selectedFilters
+                viewModel.onUpdateFilter(selectedFilters)
+                onfilterActiveChange(false)
 
+            }
+
+        )
     }
 
 
@@ -92,20 +132,60 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel, viewModel2: SchoolViewMode
         SearchBar(
             modifier = Modifier
 //                .align(Alignment.TopStart)
-                .padding(top = if (searchActive) 0.dp else 8.dp)
-                .fillMaxWidth(if (searchActive) 1f else 0.8f) ,
+                .padding(top = if (searchActive) 0.dp else 4.dp)
+//                .fillMaxWidth(if (searchActive) 1f else 0.93f)
+                ,
             query = query,
             onQueryChange = {
-                viewModel.onSearchQueryChange(it)  },
-            onSearch = { searchActive = false },
+                viewModel.onSearchQueryChange(it)
+                 },
+            onSearch = {
+//                searchActive = false
+                onSearchActiveChange(false)
+                       },
             active = searchActive,
-            onActiveChange = { searchActive = it },
+            onActiveChange = onSearchActiveChange,
+//            onActiveChange = {searchActive = it  },
+//            onActiveChange = { searchActive = it },
             placeholder = { Text("搜尋...") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
             trailingIcon = {
+                Row(){
+                    if (!searchActive)
+                IconButton(
+                    onClick = {
+                        keyboardController?.hide()
+                        onfilterActiveChange(true) },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.FilterList, // 或者用 Icons.Default.Tune
+                        contentDescription = if (isZh) "篩選" else "Filter",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
                 if (searchActive) {
-                    IconButton(onClick = { if (!query.isNotEmpty())   searchActive = false }) {
+
+                    IconButton(onClick = {
+                        // 執行搜尋邏輯
+                        println("搜尋內容: $query")
+                        keyboardController?.hide() // 隱藏鍵盤
+                        SchoolDataHolder.query= { query.toString() }
+                        SchoolDataHolder.currencySelectedFilters=currencySelectedFilters
+                        onSearch()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "搜尋按鈕"
+                        )
+                    }
+
+                    IconButton(onClick = { if (!query.isNotEmpty())
+//                        searchActive = false
+                        onSearchActiveChange(false)
+                    }) {
                         Icon(Icons.Default.Close, contentDescription = null)
+                    }
+
                     }
                 }
             }
@@ -122,7 +202,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel, viewModel2: SchoolViewMode
                     // 正確調用擴充函式
                     filteredListIsEmpty()
                 }else{
-                    items(schools2) { school ->
+                    items(searchResults) { school ->
 
                         val displayName =
                             if (isZh) (school.chineseName ?: school.englishName)
@@ -132,10 +212,11 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel, viewModel2: SchoolViewMode
                             supportingContent = { Text("點擊選擇 $displayName") },
                             leadingContent = { Icon(Icons.Default.History, contentDescription = null) },
                             modifier = Modifier.clickable {
-
-                                mappingToChooseResult(selectedSchool,viewModel2,school)
-
-                                searchActive = false
+                                print(school)
+                                onSelectSchoolChange(school)
+                                onClickResultChange(true)
+                                onSearchActiveChange(false)
+//                                searchActive = false
 
                             }
 
@@ -147,16 +228,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel, viewModel2: SchoolViewMode
 
             }
         }
-        Button(onClick = {
-            btnActive = true },
-                modifier = Modifier
-                    .padding(top = 16.dp)
-            ,
 
-
-        ){
-            Text("btn")
-        }
 
         }
         }
@@ -193,9 +265,14 @@ fun LazyListScope.filteredListIsEmpty() {
     }
 }
 
-fun mappingToChooseResult(selectedSchool: SchoolEntity?,viewModel2: SchoolViewModel,school: SchoolEntity){
+@Composable
+fun mappingToChooseResult(selectedSchool: SchoolEntity?, viewModel2: SchoolViewModel, school: SchoolEntity){
 
-    if (selectedSchool != null) {
-        viewModel2.closeSchoolMap()}
-    viewModel2.openSchoolMap(school)
+//    if (selectedSchool != null) {
+//        viewModel2.closeSchoolMap()}
+//    viewModel2.openSchoolMap(school)
+    SchoolDetailScreen(
+        school = school!!,
+        onBack = { viewModel2.closeSchoolMap() })
+
 }
