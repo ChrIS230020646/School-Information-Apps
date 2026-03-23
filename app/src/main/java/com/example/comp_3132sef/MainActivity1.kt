@@ -1,31 +1,34 @@
 package com.example.comp_3132sef
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.school.SchoolViewModel
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
 import java.util.Locale
 import androidx.compose.ui.graphics.Color
-import androidx.room.util.getColumnIndex
+import androidx.compose.ui.platform.LocalContext
+import com.example.comp_3132sef.data.local.SchoolDataHolder
+import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.detail.FavItemList
-import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
+import com.example.comp_3132sef.ui.search.mappingToChooseResult
 import com.example.comp_3132sef.ui.search.searchBarCompose
 
 class MainActivity1 : ComponentActivity() {
@@ -52,8 +55,38 @@ class MainActivity1 : ComponentActivity() {
 @Composable
 fun SearchBarScreen(viewModel: SearchSchoolViewModel = viewModel(), viewModel2: SchoolViewModel = viewModel()) {
 //
-    val isZh = Locale.getDefault().language == "zh"
+    val TAG = "DebugMove" // 定義 Log 標籤
+    var isZh by remember {mutableStateOf(Locale.getDefault().language == "zh")}
+    var searchActive by remember { mutableStateOf(false) }
+    var filterActive by remember { mutableStateOf(false) }
+    var onClickResult by remember { mutableStateOf(false) }
+    var selectSchool by remember { mutableStateOf<SchoolEntity?>(null) }
+    val context = LocalContext.current
+    LaunchedEffect(onClickResult) {
+        if (onClickResult) {
+            if (selectSchool != null) {
+                Log.d(TAG, "準備跳轉！目標 ID: ${selectSchool!!.id}")
+                try {
+                    SchoolDataHolder.selectedSchool = selectSchool
+                    SchoolDataHolder.isZh=isZh
 
+                    val intent = Intent(context, SearchResultActivity::class.java)
+//                    context.startActivity(intent)
+
+                    context.startActivity(intent)
+                    Log.d(TAG, "startActivity 已執行")
+                } catch (e: Exception) {
+                    Log.e(TAG, "跳轉失敗: ${e.message}")
+                } finally {
+                    onClickResult = false // 重置狀態
+                    searchActive=false
+                }
+            } else {
+                Log.w(TAG, "onClickResult 為 true 但 selectSchool 是空的，跳轉取消")
+                onClickResult = false
+            }
+        }
+    }
 
     Row(
         verticalAlignment = BiasAlignment.Vertical(0.1f),
@@ -120,9 +153,45 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel = viewModel(), viewModel2: 
             }
         }
     }
-    Row(){
 
-        searchBarCompose(viewModel, viewModel2,isZh)
+    Column(){
+        if(!searchActive and !filterActive and !onClickResult) {
+            Row() {
+                TextButton(onClick = { isZh = !isZh
+                     }) {
+                    Text(if (isZh) "EN" else "中")
+                }
+//            Button(onClick = {
+////                onfilterActiveChange(true)
+//                filterActive=true
+//                             },
+//                modifier = Modifier
+//                    .padding(top = 16.dp)
+//                ,
+//
+//
+//                ){
+//                Text("filter")
+//            }
+            }
+        }
+
+        searchBarCompose(viewModel,
+            searchActive,
+            filterActive,
+            onClickResult,
+            selectSchool,
+            viewModel2,isZh,
+            onSearchActiveChange = { searchActive = it },
+            onfilterActiveChange = { filterActive = it },
+            onClickResultChange = { onClickResult = it },
+            onSelectSchoolChange = { selectSchool = it },
+            onSearch = {
+                SchoolDataHolder.isZh=isZh
+                val intent = Intent(context, MainActivity::class.java)
+                context.startActivity(intent)
+            })
+
 
     }
 
@@ -133,49 +202,7 @@ fun MoveToFavPage() {
     TODO("Not yet implemented")
 }
 
-//@Composable
-//fun mappingToChooseResult(selectedSchool: SchoolEntity?,viewModel2: SchoolViewModel,school: SchoolEntity){
-//
-//    if (selectedSchool != null) {
-//        viewModel2.closeSchoolMap()}
-//    viewModel2.openSchoolMap(school)
-//}
 
-
-
-/**
-LazyListScope 的擴充函式 (Extension Function)，
- */
-//fun LazyListScope.filteredListIsEmpty() {
-//    item {
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp),
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Text(
-//                "找不到結果",
-//                color = MaterialTheme.colorScheme.outline
-//            )
-//        }
-//    }
-//}
-
-
-
-//fun getNameListItemsToLists(inputList: MutableList<String>, list: List<SchoolEntity>, isEnglish: Boolean) {
-//    // 使用 forEach 遍歷 schools2，並將名稱加入 inputList
-//    if(isEnglish){
-//        list.forEach { school ->
-//            inputList.add(school.englishName)
-//        }
-//    }else{
-//        list.forEach { school ->
-//            inputList.add(school.chineseName ?: school.englishName)
-//        }
-//    }
-//}
 
 
 
