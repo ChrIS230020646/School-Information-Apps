@@ -10,8 +10,8 @@ import java.util.Locale
 object SchoolDataHolder {
     var selectedSchool: SchoolEntity? = null
     var isZh by mutableStateOf(Locale.getDefault().language == "zh")
-    var query by mutableStateOf({ "" })
+    var query =""
     var currencySelectedFilters by mutableStateOf<Map<String, List<String>>>(emptyMap())
-    
+
 
 }
