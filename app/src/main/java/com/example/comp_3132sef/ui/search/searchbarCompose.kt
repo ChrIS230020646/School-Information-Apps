@@ -169,7 +169,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                         // 執行搜尋邏輯
                         println("搜尋內容: $query")
                         keyboardController?.hide() // 隱藏鍵盤
-                        SchoolDataHolder.query= { query.toString() }
+                        SchoolDataHolder.query= query
                         SchoolDataHolder.currencySelectedFilters=currencySelectedFilters
                         onSearch()
                     }) {
