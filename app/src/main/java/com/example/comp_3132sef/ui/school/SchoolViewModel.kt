@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.repository.SchoolRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +20,7 @@ import kotlin.math.cos
 import kotlin.math.sqrt
 import kotlin.math.pow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlin.String
 
 
@@ -53,7 +56,9 @@ class SchoolViewModel(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = emptyList()
             )
+
     fun getSchoolEntities(schoolIds: Set<String>): StateFlow<List<SchoolEntity>> {
+        Log.d("Debug", "getSchoolEntities")
         return repository.observeSchoolEntities(schoolIds)
             .stateIn(
                 scope = viewModelScope,
@@ -61,6 +66,7 @@ class SchoolViewModel(
                 initialValue = emptyList()
             )
     }
+
 
     fun Context.isOnline(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -73,7 +79,10 @@ class SchoolViewModel(
         viewModelScope.launch {
             if (getApplication<Application>().isOnline()) {
                 try {
-                    repository.refreshSchools()
+                    if(!SchoolDataHolder.isRefresh) {
+                        repository.refreshSchools()
+                        SchoolDataHolder.isRefresh=true
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -88,7 +97,16 @@ class SchoolViewModel(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = emptySet()
             )
-
+    val favoriteSchoolEntities: StateFlow<List<SchoolEntity>> = favorites
+        .flatMapLatest { ids ->
+            Log.d("Debug", "正在為 ${ids.size} 個 ID 查詢詳細資料")
+            repository.observeSchoolEntities(ids)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
     fun toggleFavorite(name: String) {
         viewModelScope.launch {
             repository.toggleFavorite(name)
