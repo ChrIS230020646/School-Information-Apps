@@ -1,5 +1,6 @@
 package com.example.comp_3132sef
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,6 +28,7 @@ import java.util.Locale
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.platform.LocalContext
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
@@ -35,10 +37,13 @@ import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val TAG = "DebugMove" // 定義 Log 標籤
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel: SchoolViewModel = viewModel()
             COMP_3132SEFTheme {
+
                 // 使用更安全的判斷方式 (Use safer null checks)
                 val queryText = SchoolDataHolder.query?: ""
                 val filters = SchoolDataHolder.currencySelectedFilters ?: emptyMap()
@@ -49,10 +54,10 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     if (hasFilter || hasQuery) {
                         Log.d("DebugMove", "Mode: Search Result (Q: '$queryText', F: ${filters.size})")
-                        searchResultScreen()
+                        searchResultScreen(viewModel)
                     } else {
                         Log.d("DebugMove", "Mode: Main List (Displaying all items)")
-                        MainScreen()
+                        MainScreen(viewModel)
                     }
                 }
             }
@@ -62,7 +67,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun searchResultScreen(
-    viewModel: SchoolViewModel = viewModel(),
+    viewModel: SchoolViewModel ,
     searchSchoolViewModel:SearchSchoolViewModel= viewModel(),
 //    back: () -> Unit
 ){
@@ -126,13 +131,13 @@ fun searchResultScreen(
         FloatingActionButton(
             onClick = {
                 try {
-                    // 1. Create the Intent
-                    val intent = Intent(context, SearchActivity::class.java).apply {
-                        putExtra("EXTRA_DATA", "Hello from Compose!")
-                    }
-
+//                    // 1. Create the Intent
+//                    val intent = Intent(context, SearchActivity::class.java).apply {
+//                        putExtra("EXTRA_DATA", "Hello from Compose!")
+//                    }
+                    (context as? Activity)?.finish()
                     // 2. Try to start the Activity
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
 
                 } catch (e: Exception) {
                     // 3. Handle the "problem"
@@ -152,14 +157,14 @@ fun searchResultScreen(
                 .align(Alignment.TopEnd) // Put it in the top right!
                 .padding(top = 40.dp, end = 16.dp)
         ) {
-            Icon(Icons.Default.Add, contentDescription = null)
+            Icon(Icons.Default.ArrowBack, contentDescription = "返回")
         }
     }
 }
 
 @Composable
 fun MainScreen(
-    viewModel: SchoolViewModel = viewModel(),
+    viewModel: SchoolViewModel,
 
 ) {
 
@@ -238,13 +243,13 @@ fun SchoolListScreen(
         FloatingActionButton(
             onClick = {
                 try {
-                    // 1. Create the Intent
-                    val intent = Intent(context, SearchActivity::class.java).apply {
-                        putExtra("EXTRA_DATA", "Hello from Compose!")
-                    }
-
+//                    // 1. Create the Intent
+//                    val intent = Intent(context, SearchActivity::class.java).apply {
+//                        putExtra("EXTRA_DATA", "Hello from Compose!")
+//                    }
+                    (context as? Activity)?.finish()
                     // 2. Try to start the Activity
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
 
                 } catch (e: Exception) {
                     // 3. Handle the "problem"
@@ -264,7 +269,7 @@ fun SchoolListScreen(
                 .align(Alignment.TopEnd) // Put it in the top right!
                 .padding(top = 40.dp, end = 16.dp)
         ) {
-            Icon(Icons.Default.Add, contentDescription = null)
+            Icon(Icons.Default.ArrowBack, contentDescription = "返回")
         }
     }
 
