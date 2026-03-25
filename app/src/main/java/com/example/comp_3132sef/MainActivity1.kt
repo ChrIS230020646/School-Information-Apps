@@ -98,7 +98,8 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
         verticalAlignment = BiasAlignment.Vertical(0.1f),
         horizontalArrangement = Arrangement.Center, // 讓 Box 在 Row 裡面水平置中
         modifier = Modifier
-            .height((16 * 200).dp)
+//            .height((16 * 20).dp)
+                .fillMaxHeight()
             .fillMaxWidth()
 
     ) {
