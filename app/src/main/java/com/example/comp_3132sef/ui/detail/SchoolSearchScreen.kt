@@ -58,18 +58,30 @@ fun SchoolSearchScreen(viewModel: SearchSchoolViewModel) {
 @Composable
 fun SchoolCard(school: SchoolEntity) {
     val isZh = Locale.getDefault().language == "zh"
+    val displayName1 =
+        if (isZh) (school.chineseName ?: school.englishName)
+        else school.englishName
+    val displayName2 =
+        if (isZh) (school.englishName ?: school.chineseName)
+        else school.chineseName
+    val address =
+        if (isZh) (school.chineseAddress ?: school.englishAddress)
+        else school.englishAddress
+    val district = if (isZh) (school.chineseDistrict ?: school.district)
+    else school.district
+    val religion = if (isZh) (school.chineseReligion ?: school.religion)
+    else school.religion
+    val Category = if (isZh) (school.chineseCategory ?: school.englishCategory)
+    else school.englishCategory
+    val Session = if (isZh) (school.chineseSession ?: school.session)
+    else school.session
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 
-            val displayName1 =
-                if (isZh) (school.chineseName ?: school.englishName)
-                else school.englishName
-            val displayName2 =
-                if (isZh) (school.englishName ?: school.chineseName)
-                else school.chineseName
+
             displayName1.let {
                 if (!(it.isEmpty())) {
                     Text(text = it, fontSize = 20.sp, fontWeight = FontWeight.Bold)
@@ -80,27 +92,20 @@ fun SchoolCard(school: SchoolEntity) {
             }
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-            val address =
-                if (isZh) (school.chineseAddress ?: school.englishAddress)
-                else school.englishAddress
+
             if (address != null) {
                 DetailRow(stringResource(R.string.Address), address)
             }
             DetailRow(stringResource(R.string.Phone_No), school.telephone!!)
-            val district = if (isZh) (school.chineseDistrict ?: school.district)
-            else school.district
+
             if (district != null) {
                 DetailRow(stringResource(R.string.District), district)
             }
-            val religion = if (isZh) (school.chineseReligion ?: school.religion)
-            else school.religion
+
             if (religion != null) {
                 DetailRow(stringResource(R.string.Religion), religion)
             }
-            val Category = if (isZh) (school.chineseCategory ?: school.englishCategory)
-        else school.englishCategory
-            val Session = if (isZh) (school.chineseSession ?: school.session)
-            else school.session
+
             DetailRow(stringResource(R.string.Category), "${Category} (${Session})")
 
             Text(
