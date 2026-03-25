@@ -34,10 +34,10 @@ import com.example.comp_3132sef.ui.school.SchoolViewModel
 fun FavItemList(viewModel: SchoolViewModel,isZh: Boolean ) {
     // 1. 觀察 ViewModel 中的 StateFlow
     // 加上 initial = emptyList() 確保初始狀態安全
-    val favorites by viewModel.favorites.collectAsState()
-    val favoritesInfo by viewModel.getSchoolEntities(favorites).collectAsState()
-
+//    val favorites by viewModel.favorites.collectAsState()
+    val favoritesInfo by viewModel.favoriteSchoolEntities.collectAsState()
     // 2. 使用 LazyColumn 建立列表
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
