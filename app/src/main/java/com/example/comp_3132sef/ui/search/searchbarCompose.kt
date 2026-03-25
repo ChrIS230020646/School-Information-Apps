@@ -61,7 +61,8 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
 
                      onClickResult:Boolean,
                      selectSchool: SchoolEntity?,
-                     viewModel2: SchoolViewModel, isZh:Boolean,
+//                     viewModel2: SchoolViewModel,
+                     isZh:Boolean,
                      onSearchActiveChange: (Boolean) -> Unit,
                      onfilterActiveChange: (Boolean) -> Unit,
                      onClickResultChange: (Boolean) -> Unit,
@@ -71,10 +72,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
     val searchResults by viewModel.searchResults.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
-//    val selectedSchool by viewModel2.selectedSchool.collectAsState()
-//    val searchActive=searchActive
-//    var searchActive by remember { mutableStateOf(false) }
-//    var btnActive by remember { mutableStateOf(false) }
+
 
 //    val schoolsNameList = mutableListOf<String>()
     getNameListItemsToLists(schoolsNameList, searchResults, !isZh)
@@ -83,18 +81,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
     var currencySelectedFilters by remember { mutableStateOf<Map<String, List<String>>>(emptyMap()) }
     val filterCheckedSet = rememberFilterCheckedSet(viewModel3, isZh)
 
-//    var selectSchool by remember { mutableStateOf<SchoolEntity?>(null) }
-//    if(onClickResult && selectSchool !=null)
-//        if (onClickResult && selectSchool != null) {
-//            // 使用 !! 強制轉型，因為前面已經檢查過 selectSchool != null
-//            // Use !! because we already checked selectSchool != null above
-//            mappingToChooseResult(
-//                selectedSchool = selectSchool!!,
-//                viewModel2 = viewModel2,
-//                school= selectSchool!!
-//            )
-//
-//        }
+
     if(btnActive) {
         FilterPanelApp(
 //            viewModel = viewModel3,
@@ -265,14 +252,14 @@ fun LazyListScope.filteredListIsEmpty() {
     }
 }
 
-@Composable
-fun mappingToChooseResult(selectedSchool: SchoolEntity?, viewModel2: SchoolViewModel, school: SchoolEntity){
-
-//    if (selectedSchool != null) {
-//        viewModel2.closeSchoolMap()}
-//    viewModel2.openSchoolMap(school)
-    SchoolDetailScreen(
-        school = school!!,
-        onBack = { viewModel2.closeSchoolMap() })
-
-}
+//@Composable
+//fun mappingToChooseResult(selectedSchool: SchoolEntity?, viewModel2: SchoolViewModel, school: SchoolEntity){
+//
+////    if (selectedSchool != null) {
+////        viewModel2.closeSchoolMap()}
+////    viewModel2.openSchoolMap(school)
+//    SchoolDetailScreen(
+//        school = school!!,
+//        onBack = { viewModel2.closeSchoolMap() })
+//
+//}
