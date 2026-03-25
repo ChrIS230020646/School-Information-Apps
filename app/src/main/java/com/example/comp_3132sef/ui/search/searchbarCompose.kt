@@ -1,5 +1,6 @@
 package com.example.comp_3132sef.ui.search
 
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,9 +33,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.comp_3132sef.MainActivity
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
@@ -55,13 +58,12 @@ val filteredList = schoolsNameList
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun searchBarCompose(viewModel:SearchSchoolViewModel,
-//                     viewModel3: FilterViewModel = viewModel(),
                      searchActive:Boolean,
                      btnActive:Boolean,
 
                      onClickResult:Boolean,
                      selectSchool: SchoolEntity?,
-//                     viewModel2: SchoolViewModel,
+
                      isZh:Boolean,
                      onSearchActiveChange: (Boolean) -> Unit,
                      onfilterActiveChange: (Boolean) -> Unit,
@@ -72,11 +74,11 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
     val searchResults by viewModel.searchResults.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
-
+    val context = LocalContext.current
 
 //    val schoolsNameList = mutableListOf<String>()
+//    if(searchActive)
     getNameListItemsToLists(schoolsNameList, searchResults, !isZh)
-//    val filteredList = schoolsNameList
     val viewModel3: FilterViewModel = viewModel()
     var currencySelectedFilters by remember { mutableStateOf<Map<String, List<String>>>(emptyMap()) }
     val filterCheckedSet = rememberFilterCheckedSet(viewModel3, isZh)
@@ -99,6 +101,12 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 viewModel.onUpdateFilter(selectedFilters)
                 onfilterActiveChange(false)
 
+                SchoolDataHolder.isZh=isZh
+                val intent = Intent(context, MainActivity::class.java)
+                context.startActivity(intent)
+
+            },clarAll={
+                currencySelectedFilters = emptyMap()
             }
 
         )
@@ -106,14 +114,14 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
 
 
     Box(Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 100.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-        }
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(top = 100.dp),
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//
+//        }
         Box(){
             Row(){
         SearchBar(
