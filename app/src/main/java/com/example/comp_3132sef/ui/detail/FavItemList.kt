@@ -97,6 +97,8 @@ fun FavItemList(viewModel: SchoolViewModel,isZh: Boolean ) {
                     ,
                     onClick = {
                         // 呼叫刪除邏輯，例如：viewModel.toggleFavorite(schoolName)
+                        viewModel.toggleFavorite(favorite.englishName)
+
                     }
                 ) {
                     Icon(
