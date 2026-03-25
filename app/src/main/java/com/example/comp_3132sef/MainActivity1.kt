@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.detail.FavItemList
-import com.example.comp_3132sef.ui.search.mappingToChooseResult
 import com.example.comp_3132sef.ui.search.searchBarCompose
 
 class MainActivity1 : ComponentActivity() {
@@ -36,12 +35,19 @@ class MainActivity1 : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val schoolVm: SchoolViewModel = viewModel()
+            val searchVm: SearchSchoolViewModel = viewModel()
             MaterialTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SearchBarScreen()
+
+
+
+
+                        SearchBarScreen(searchVm, schoolVm)
+
                 }
             }
         }
@@ -53,7 +59,7 @@ class MainActivity1 : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBarScreen(viewModel: SearchSchoolViewModel = viewModel(), viewModel2: SchoolViewModel = viewModel()) {
+fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewModel) {
 //
     val TAG = "DebugMove" // 定義 Log 標籤
     var isZh by remember {mutableStateOf(Locale.getDefault().language == "zh")}
@@ -181,7 +187,8 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel = viewModel(), viewModel2: 
             filterActive,
             onClickResult,
             selectSchool,
-            viewModel2,isZh,
+//            viewModel2,
+            isZh,
             onSearchActiveChange = { searchActive = it },
             onfilterActiveChange = { filterActive = it },
             onClickResultChange = { onClickResult = it },
