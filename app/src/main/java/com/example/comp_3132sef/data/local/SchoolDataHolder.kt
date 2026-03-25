@@ -12,6 +12,7 @@ object SchoolDataHolder {
     var isZh by mutableStateOf(Locale.getDefault().language == "zh")
     var query =""
     var currencySelectedFilters by mutableStateOf<Map<String, List<String>>>(emptyMap())
-
+    var refreshSchoolsCount =0
+    var isRefresh =false
 
 }
