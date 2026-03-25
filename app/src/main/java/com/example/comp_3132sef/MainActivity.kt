@@ -29,6 +29,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.material.icons.filled.ArrowBack
+
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -74,8 +75,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 @Composable
-fun SchoolCard(school: SchoolEntity) {
-    val isZh = Locale.getDefault().language == "zh"
+fun SchoolCard(school: SchoolEntity,onClick: ()->Unit) {
+    val isZh = SchoolDataHolder.isZh
     val displayName1 =
         if (isZh) (school.chineseName ?: school.englishName)
         else school.englishName
@@ -94,8 +95,11 @@ fun SchoolCard(school: SchoolEntity) {
     val Session = if (isZh) (school.chineseSession ?: school.session)
     else school.session
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .clickable {onClick() },
         elevation = CardDefaults.cardElevation(4.dp)
+
+
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 
@@ -157,7 +161,30 @@ fun searchResultScreen(
     var onClickResult by remember { mutableStateOf(false) }
     var selectSchool by remember { mutableStateOf<SchoolEntity?>(null) }
     val context = LocalContext.current
+    LaunchedEffect(onClickResult) {
+        if (onClickResult) {
+            if (selectSchool != null) {
+                Log.d(TAG, "準備跳轉！目標 ID: ${selectSchool!!.id}")
+                try {
+                    SchoolDataHolder.selectedSchool = selectSchool
+                    SchoolDataHolder.isZh=isZh
 
+                    val intent = Intent(context, SearchResultActivity::class.java)
+
+                    context.startActivity(intent)
+                    Log.d(TAG, "startActivity 已執行")
+                } catch (e: Exception) {
+                    Log.e(TAG, "跳轉失敗: ${e.message}")
+                } finally {
+                    onClickResult = false // 重置狀態
+                    searchActive=false
+                }
+            } else {
+                Log.w(TAG, "onClickResult 為 true 但 selectSchool 是空的，跳轉取消")
+                onClickResult = false
+            }
+        }
+    }
 
     // 使用 LaunchedEffect 確保只在進入此頁面時設定一次 ViewModel 狀態
     LaunchedEffect(SchoolDataHolder.query, SchoolDataHolder.currencySelectedFilters) {
@@ -169,90 +196,81 @@ fun searchResultScreen(
     // 觀察結果
     val searchResults by searchSchoolViewModel.searchResults.collectAsState()
     val favorites by viewModel.favorites.collectAsState()
+    Box(modifier = Modifier
+//                .height((16 * 25).dp)
+        .padding(16.dp,)
+        .padding(top = 120.dp, start =24.dp,end =4.dp),
+
+        contentAlignment = Alignment.Center,
 
 
-    LazyColumn() {
-        item(){
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-//                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                        ,
-                verticalAlignment = Alignment.CenterVertically // 確保按鈕跟搜尋框垂直對齊
-            ){
-                IconButton(
-                    onClick = { (context as? Activity)?.finish() },
-                    modifier = Modifier.size(48.dp)
-                ){
-                    Icon(Icons.Default.ArrowBack, contentDescription = "返回",
-                        modifier = Modifier.size(48.dp))
-                }
-                Box(
-                    modifier = Modifier
-                        .weight(1f) // 關鍵：讓搜尋欄填滿剩餘空間
-                        .padding(start = 4.dp)
-                ){
-                searchBarCompose(
-                    searchSchoolViewModel,
-                    searchActive,
-                    filterActive,
-                    onClickResult,
-                    selectSchool,
-//            viewModel2,
-                    isZh,
-                    onSearchActiveChange = { searchActive = it },
-                    onfilterActiveChange = { filterActive = it },
-                    onClickResultChange = { onClickResult = it },
-                    onSelectSchoolChange = { selectSchool = it },
-                    onSearch = {
-                        SchoolDataHolder.isZh = isZh
-                        val intent = Intent(context, MainActivity::class.java)
-                        context.startActivity(intent)
+        ){
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+//            .statusBarsPadding()
+            ,
+
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp) // 卡片間距
+        ) {
+            items(searchResults) { school ->
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    // 點擊卡片跳轉詳情
+                    SchoolCard(school, onClick = {
+                        selectSchool = school
+                        onClickResult = true
                     })
 
-            }
-            }
-
-        }
-        items(searchResults) { school ->
-            Log.d(TAG, "school.chineseName {$school.chineseName} ")
-//            val displayName =
-//                if (isZh) (school.chineseName ?: school.englishName)
-//                else school.englishName
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { viewModel.openSchoolMap(school) }
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-//                Text(
-//                    text = displayName,
-//                    modifier = Modifier.weight(1f)
-//                )
-                SchoolCard(school)
-
-                val favKey = school.englishName
-
-                IconButton(onClick = { viewModel.toggleFavorite(favKey) }) {
-                    Icon(
-                        imageVector =
-                            if (favorites.contains(favKey))
-                                Icons.Filled.Star
-                            else
-                                Icons.Outlined.StarBorder,
-                        contentDescription = null,
-                        tint =
-                            if (favorites.contains(favKey))
-                                Color(0xFFFFC107)
-                            else
-                                Color.Gray
-                    )
+                    // 收藏按鈕 (疊加在右上方或放在 Row 裡)
+                    val favKey = school.englishName ?: ""
+                    IconButton(
+                        onClick = { viewModel.toggleFavorite(favKey) },
+                        modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (favorites.contains(favKey)) Icons.Filled.Star else Icons.Outlined.StarBorder,
+                            contentDescription = "Favorite",
+                            tint = if (favorites.contains(favKey)) Color(0xFFFFC107) else Color.Gray
+                        )
+                    }
                 }
             }
-        }
+        }}
+    Column(modifier = Modifier.fillMaxSize()) {
+
+        // --- 頂部欄區域 ---
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding() // 避免被狀態欄擋住
+//                .padding(horizontal = 4.dp),
+//            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if(!searchActive && !filterActive)
+            IconButton(onClick = { (context as? Activity)?.finish() }) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+            }
+
+        searchBarCompose(
+            searchSchoolViewModel,
+            searchActive,
+            filterActive,
+            onClickResult,
+            selectSchool,
+            isZh,
+            onSearchActiveChange = { searchActive = it },
+            onfilterActiveChange = { filterActive = it },
+            onClickResultChange = { onClickResult = it },
+            onSelectSchoolChange = { selectSchool = it },
+            onSearch = {
+                // 執行搜尋邏輯
+            }
+        )
+
+}
+
     }
+
 //    Box(modifier = Modifier.fillMaxSize()) {
 //        // 1. Your main screen content (List, Column, etc.)
 //
@@ -312,97 +330,3 @@ fun searchResultScreen(
 //    }
 //}
 
-@Composable
-fun SchoolListScreen(
-    viewModel: SchoolViewModel
-) {
-    val favorites by viewModel.favorites.collectAsState()
-    val schools by viewModel.schoolEntities.collectAsState()
-
-    val isZh = Locale.getDefault().language == "zh"
-
-    val context = LocalContext.current
-
-
-
-
-
-    LazyColumn {
-        items(schools) { school ->
-
-            val displayName =
-                if (isZh) (school.chineseName ?: school.englishName)
-                else school.englishName
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { viewModel.openSchoolMap(school) }
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-//                Text(
-//                    text = displayName,
-//                    modifier = Modifier.weight(1f)
-//                )
-                SchoolCard(school)
-                val favKey = school.englishName
-
-                IconButton(onClick = { viewModel.toggleFavorite(favKey) }) {
-                    Icon(
-                        imageVector =
-                        if (favorites.contains(favKey))
-                            Icons.Filled.Star
-                        else
-                            Icons.Outlined.StarBorder,
-                        contentDescription = null,
-                        tint =
-                        if (favorites.contains(favKey))
-                            Color(0xFFFFC107)
-                        else
-                            Color.Gray
-                    )
-                }
-            }
-        }
-    }
-    Box(modifier = Modifier.fillMaxSize()) {
-        // 1. Your main screen content (List, Column, etc.)
-
-        // 2. The FAB placed manually
-        FloatingActionButton(
-            onClick = {
-                try {
-//                    // 1. Create the Intent
-//                    val intent = Intent(context, SearchActivity::class.java).apply {
-//                        putExtra("EXTRA_DATA", "Hello from Compose!")
-//                    }
-                    (context as? Activity)?.finish()
-                    // 2. Try to start the Activity
-//                    context.startActivity(intent)
-
-                } catch (e: Exception) {
-                    // 3. Handle the "problem"
-                    // This logs it to your Logcat for debugging
-                    Log.e("NavigationError", "Failed to launch HomeActivity", e)
-
-                    // This shows a popup to the user so they know something went wrong
-                    Toast.makeText(
-                        context,
-                        "Error: ${e.localizedMessage}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-            },
-            modifier = Modifier
-                .align(Alignment.TopEnd) // Put it in the top right!
-                .padding(top = 40.dp, end = 16.dp)
-        ) {
-            Icon(Icons.Default.ArrowBack, contentDescription = "返回")
-        }
-    }
-
-
-
-}
