@@ -10,9 +10,7 @@ import com.example.comp_3132sef.data.local.Filter.SchoolsDistrictEntity
 import com.example.comp_3132sef.data.local.Filter.SchoolsGenderEntity
 import com.example.comp_3132sef.data.local.Filter.SchoolsReligionEntity
 import com.example.comp_3132sef.data.local.Filter.SchoolsSessionEntity
-import com.example.comp_3132sef.data.local.SchoolEntity
 import kotlinx.coroutines.flow.*
-import com.example.comp_3132sef.data.repository.SchoolRepository
 import com.example.comp_3132sef.data.repository.SchoolsFilterCategoryRepository
 
 class FilterViewModel(application: Application) : AndroidViewModel(application) {
