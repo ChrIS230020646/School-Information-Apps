@@ -1,6 +1,7 @@
 package com.example.comp_3132sef.ui.school
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,7 +16,6 @@ import androidx.room.RoomDatabase
 import com.example.comp_3132sef.data.local.DatabaseProvider
 import kotlinx.coroutines.flow.*
 import com.example.comp_3132sef.data.local.SchoolEntity
-import com.example.comp_3132sef.data.repository.SchoolRepository
 import kotlin.String
 
 //@Database(entities = [SchoolEntity::class], version = 1)
@@ -28,7 +28,7 @@ class SearchSchoolViewModel(application: Application) : AndroidViewModel(applica
     private val _searchFilter = MutableStateFlow<Map<String, List<String>>>(emptyMap())
     val searchFilter = _searchFilter.asStateFlow()
     val searchQuery = _searchQuery.asStateFlow()
-    private val repository = SchoolRepository(application)
+//    private val repository = SchoolRepository(application)
     private val db = DatabaseProvider.getDatabase(application)
     private val schoolDao = db.schoolDao()
 //@OptIn(ExperimentalCoroutinesApi::class)
@@ -36,6 +36,7 @@ class SearchSchoolViewModel(application: Application) : AndroidViewModel(applica
         // 這裡把兩個值打包，傳給下一層
         Pair(query, filters)
     }.flatMapLatest { (query, filters) ->
+    Log.d("Debug", "schoolDao")
         // 呼叫更新後的 DAO (記得去 DAO 把參數補上)
         schoolDao.searchSchoolsWithFilters(
             query = query,
