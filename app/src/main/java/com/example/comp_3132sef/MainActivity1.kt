@@ -25,9 +25,11 @@ import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
 import java.util.Locale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.detail.FavItemList
+import com.example.comp_3132sef.ui.school.FilterViewModel
 import com.example.comp_3132sef.ui.search.searchBarCompose
 
 class MainActivity1 : ComponentActivity() {
@@ -168,28 +170,21 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
                      }) {
                     Text(if (isZh) "EN" else "中")
                 }
-//            Button(onClick = {
-////                onfilterActiveChange(true)
-//                filterActive=true
-//                             },
-//                modifier = Modifier
-//                    .padding(top = 16.dp)
-//                ,
-//
-//
-//                ){
-//                Text("filter")
-//            }
+
             }
         }
-
+//       var searchbarStartPositon= if (!searchActive) 24.dp else 0.dp
+//Box(Modifier.padding( start =searchbarStartPositon,)){
+//    if(!filterActive)
         searchBarCompose(viewModel,
             searchActive,
             filterActive,
+
             onClickResult,
             selectSchool,
 //            viewModel2,
             isZh,
+
             onSearchActiveChange = { searchActive = it },
             onfilterActiveChange = { filterActive = it },
             onClickResultChange = { onClickResult = it },
@@ -201,9 +196,9 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
             })
 
 
-    }
+    }}
 
-}
+//}
 
 
 fun MoveToFavPage() {

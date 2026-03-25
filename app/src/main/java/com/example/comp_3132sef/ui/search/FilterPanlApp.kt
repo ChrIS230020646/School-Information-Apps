@@ -1,14 +1,25 @@
 package com.example.comp_3132sef.ui.search
 import FilterCheckedSet
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -19,26 +30,14 @@ import com.example.comp_3132sef.ui.school.FilterViewModel
 // 1. Data model for the filter state
 @Composable
 fun FilterPanelApp(
-//    viewModel: FilterViewModel,
+
     isZh: Boolean,
     filterCheckedSet:FilterCheckedSet,
     selectSet:Map<String, List<String>>,
+    clarAll:() ->Unit,
     onBack: () -> Unit,
     onConfirm: (Map<String, List<String>>) -> Unit
 ) {
-    // 1. Data Collection (Stay the same)
-//    val schoolsSession by viewModel.getSchoolsSessionEntities.collectAsState()
-//    val schoolsGender by viewModel.getSchoolsGenderEntity.collectAsState()
-//    val schoolsReligion by viewModel.getSchoolsReligionEntity.collectAsState()
-//    val schoolsCategory by viewModel.getSchoolsCategoryEntity.collectAsState()
-//    val schoolsDistrict by viewModel.getSchoolsDistrictEntity.collectAsState()
-//
-//    // 2. Transformed Lists (Cached with remember)
-//    val sessionList = remember(schoolsSession, isZh) { schoolsSession.map { if (isZh) it.chineseSession else it.session } }
-//    val genderList = remember(schoolsGender, isZh) { schoolsGender.map { if (isZh) it.chineseStudentsGender else it.studentsGender } }
-//    val religionList = remember(schoolsReligion, isZh) { schoolsReligion.map { if (isZh) it.chineseReligion else it.religion } }
-//    val categoryList = remember(schoolsCategory, isZh) { schoolsCategory.map { if (isZh) (it.chineseCategory ?: "") else (it.englishCategory ?: "") } }
-//    val districtList = remember(schoolsDistrict, isZh) { schoolsDistrict.map { if (isZh) it.chineseDistrict else it.district } }
 
     val sessionList =filterCheckedSet.sessionList
     val genderList = filterCheckedSet.genderList
@@ -48,12 +47,6 @@ fun FilterPanelApp(
 
 
     // 3. States for Checkboxes
-//    var sessionChecked by remember(schoolsSession) { mutableStateOf(List(schoolsSession.size) { false }) }
-
-//    var genderChecked by remember(schoolsGender) { mutableStateOf(List(schoolsGender.size) { false }) }
-//    var religionChecked by remember(schoolsReligion) { mutableStateOf(List(schoolsReligion.size) { false }) }
-//    var districtChecked by remember(schoolsDistrict) { mutableStateOf(List(schoolsDistrict.size) { false }) }
-//    var categoryChecked by remember(schoolsCategory) { mutableStateOf(List(schoolsCategory.size) { false }) }
 
 // Session
     var sessionChecked by remember(sessionList, isZh, selectSet) {
@@ -84,8 +77,11 @@ fun FilterPanelApp(
         val saved = selectSet["category"].orEmpty()
         mutableStateOf(List(categoryList.size) { i -> saved.contains(categoryList[i]) })
     }
-
-
+    var isSessionExpanded by rememberSaveable { mutableStateOf(true) }
+    var isGenderExpanded by rememberSaveable { mutableStateOf(true) }
+    var isReligionExpanded by rememberSaveable { mutableStateOf(true) }
+    var isDistrictExpanded by rememberSaveable { mutableStateOf(true) }
+    var isCategoryExpanded by rememberSaveable { mutableStateOf(true) }
 
     //  UI STRUCTURE
     Scaffold(
@@ -137,7 +133,7 @@ fun FilterPanelApp(
                             onConfirm(selectedData)
                         }
                     ) {
-                        Text(if (isZh) "確認" else "Confirm")
+                        Text(if (isZh) "搜尋" else "Search")
                     }
                 }
             }
@@ -152,7 +148,44 @@ fun FilterPanelApp(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Sessions
-            item { SectionHeader(if(isZh) "授課時間" else "Session") }
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
+                        .clickable { isSessionExpanded = !isSessionExpanded } // 點擊整塊區域觸發
+                ) {
+//                    // line
+//                    HorizontalDivider(
+//                        thickness = 1.dp,
+//                        color = Color.Black.copy(alpha = 0.6f)
+//                    )
+
+                    // context
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        SectionHeader(if(isZh) "授課時間" else "Session")
+
+                        Icon(
+                            imageVector = if (isSessionExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    // line
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = Color.Black.copy(alpha = 0.6f)
+                    )
+                }
+            }
+            if (isSessionExpanded)
             itemsIndexed(sessionList) { index, label ->
                 FilterRow(label, sessionChecked[index]) { isChecked ->
                     sessionChecked = sessionChecked.toMutableList().apply { this[index] = isChecked }
@@ -160,7 +193,44 @@ fun FilterPanelApp(
             }
 
             // Genders
-            item { SectionHeader(if(isZh) "學生性別" else "Gender") }
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
+                        .clickable { isGenderExpanded = !isGenderExpanded } // 點擊整塊區域觸發
+                ) {
+//                    // line
+//                    HorizontalDivider(
+//                        thickness = 1.dp,
+//                        color = Color.Black.copy(alpha = 0.6f)
+//                    )
+
+                    // context
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        SectionHeader(if(isZh) "學生性別" else "Gender")
+
+                        Icon(
+                            imageVector = if (isGenderExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    // line
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = Color.Black.copy(alpha = 0.6f)
+                    )
+                }
+            }
+            if(isGenderExpanded)
             itemsIndexed(genderList) { index, label ->
                 FilterRow(label, genderChecked[index]) { isChecked ->
                     genderChecked = genderChecked.toMutableList().apply { this[index] = isChecked }
@@ -168,7 +238,44 @@ fun FilterPanelApp(
             }
 
             // Districts
-            item { SectionHeader(if(isZh) "地區" else "District") }
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
+                        .clickable { isDistrictExpanded = !isDistrictExpanded } // 點擊整塊區域觸發
+                ) {
+                    // line
+//                    HorizontalDivider(
+//                        thickness = 1.dp,
+//                        color = Color.Black.copy(alpha = 0.6f)
+//                    )
+
+                    // context
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        SectionHeader(if(isZh) "地區" else "District")
+
+                        Icon(
+                            imageVector = if (isDistrictExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    // line
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = Color.Black.copy(alpha = 0.6f)
+                    )
+                }
+            }
+        if(isDistrictExpanded)
             itemsIndexed(districtList) { index, label ->
                 FilterRow(label, districtChecked[index]) { isChecked ->
                     districtChecked = districtChecked.toMutableList().apply { this[index] = isChecked }
@@ -176,14 +283,90 @@ fun FilterPanelApp(
             }
 
         //Religion
-            item { SectionHeader(if(isZh) "宗教" else "Religion") }
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
+                        .clickable { isReligionExpanded = !isReligionExpanded } // 點擊整塊區域觸發
+                ) {
+//                    // line
+//                    HorizontalDivider(
+//                        thickness = 1.dp,
+//                        color = Color.Black.copy(alpha = 0.6f)
+//                    )
+
+                    // context
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                         SectionHeader(if(isZh) "宗教" else "Religion")
+
+                        Icon(
+                            imageVector = if (isReligionExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    // line
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = Color.Black.copy(alpha = 0.6f)
+                    )
+                }
+            }
+            if (isReligionExpanded)
             itemsIndexed(religionList) { index, label ->
                 FilterRow(label, religionChecked[index]) { isChecked ->
                     religionChecked = religionChecked.toMutableList().apply { this[index] = isChecked }
                 }
             }
             //Category
-            item { SectionHeader(if(isZh) "類別" else "category") }
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
+                        .clickable { isCategoryExpanded = !isCategoryExpanded } // 點擊整塊區域觸發
+                ) {
+                    // line
+//                    HorizontalDivider(
+//                        thickness = 1.dp,
+//                        color = Color.Black.copy(alpha = 0.6f)
+//                    )
+
+                    // context
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                         SectionHeader(if(isZh) "類別" else "Category")
+
+                        Icon(
+                            imageVector = if (isCategoryExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    // line
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = Color.Black.copy(alpha = 0.6f)
+                    )
+                }
+            }
+
+
+            if (isCategoryExpanded)
             itemsIndexed(categoryList) { index, label ->
                 FilterRow(label, categoryChecked[index]) { isChecked ->
                     categoryChecked = categoryChecked.toMutableList().apply { this[index] = isChecked }
@@ -201,7 +384,7 @@ fun SectionHeader(title: String) {
         modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
         color = MaterialTheme.colorScheme.primary
     )
-    HorizontalDivider(thickness = 1.dp)
+
 }
 
 @Composable
