@@ -221,6 +221,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
                     contentDescription = if (isZh) "搜尋" else "Search",
                     tint = MaterialTheme.colorScheme.primary
                 )}
+            if(!filterActive)
         IconButton(
             onClick = {
                 keyboardController?.hide()
