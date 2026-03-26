@@ -122,9 +122,11 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
 //        ) {
 //
 //        }
-        Box(){
+        Box(modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.TopEnd){
             Row(){
-        SearchBar(
+                if(!btnActive)
+                SearchBar(
             modifier = Modifier
 //                .align(Alignment.TopStart)
                 .padding(top = if (searchActive) 0.dp else 4.dp)
