@@ -10,6 +10,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.*
@@ -26,11 +28,14 @@ import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
 import java.util.Locale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.detail.FavItemList
 import com.example.comp_3132sef.ui.school.FilterViewModel
+import com.example.comp_3132sef.ui.search.FilterPanelApp
+import com.example.comp_3132sef.ui.search.rememberFilterCheckedSet
 import com.example.comp_3132sef.ui.search.searchBarCompose
 
 class MainActivity1 : ComponentActivity() {
@@ -178,24 +183,70 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
 //       var searchbarStartPositon= if (!searchActive) 24.dp else 0.dp
 //Box(Modifier.padding( start =searchbarStartPositon,)){
 //    if(!filterActive)
-        searchBarCompose(viewModel,
-            searchActive,
-            filterActive,
 
-            onClickResult,
-            selectSchool,
-//            viewModel2,
-            isZh,
 
-            onSearchActiveChange = { searchActive = it },
-            onfilterActiveChange = { filterActive = it },
-            onClickResultChange = { onClickResult = it },
-            onSelectSchoolChange = { selectSchool = it },
-            onSearch = {
-                SchoolDataHolder.isZh=isZh
-                val intent = Intent(context, MainActivity::class.java)
-                context.startActivity(intent)
-            })
+        val viewModel3: FilterViewModel = viewModel()
+        var currencySelectedFilters by remember { mutableStateOf<Map<String, List<String>>>(emptyMap()) }
+        val filterCheckedSet = rememberFilterCheckedSet(viewModel3, isZh)
+        val keyboardController = LocalSoftwareKeyboardController.current
+        Row(
+            modifier = Modifier
+                .align(Alignment.End)
+
+        ){
+            IconButton(
+                onClick = {
+                    val intent = Intent(context, MainActivity::class.java)
+//                    context.startActivity(intent)
+
+                    context.startActivity(intent)
+                     },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search, // 或者用 Icons.Default.Tune
+                    contentDescription = if (isZh) "搜尋" else "Search",
+                    tint = MaterialTheme.colorScheme.primary
+                )}
+        IconButton(
+            onClick = {
+                keyboardController?.hide()
+                filterActive=true },
+        ) {
+            Icon(
+                imageVector = Icons.Default.FilterList, // 或者用 Icons.Default.Tune
+                contentDescription = if (isZh) "篩選" else "Filter",
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }}
+        if(filterActive)
+        FilterPanelApp(
+//            viewModel = viewModel3,
+                isZh = isZh,
+                filterCheckedSet=filterCheckedSet,
+                selectSet=currencySelectedFilters,
+                onBack = {
+
+                    filterActive=false
+                },
+                onConfirm = { selectedFilters ->
+                    // 1. 執行你的搜尋邏輯
+                    println("User selected: $selectedFilters")
+
+                    viewModel.onUpdateFilter(selectedFilters)
+                    filterActive=false
+                    SchoolDataHolder.currencySelectedFilters=selectedFilters
+//                viewModel.onSearchQueryChange(SchoolDataHolder.query)
+                    viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
+
+                    SchoolDataHolder.isZh=isZh
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+
+                },clarAll={
+                    currencySelectedFilters = emptyMap()
+                }
+
+            )
 
 
     }}
