@@ -33,12 +33,25 @@ import com.google.android.gms.location.LocationServices
 import android.util.Log
 import android.Manifest
 import android.content.pm.PackageManager
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButtonDefaults.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Alignment
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolDataHolder.isZh
 
@@ -63,37 +76,76 @@ fun SchoolDetailScreen(
     else school.englishCategory
     val Session = if (isZh) (school.chineseSession ?: school.session)
     else school.session
-    Column(modifier = Modifier.padding(16.dp)) {
-
-        Text(text = SchoolName)
-
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            border = BorderStroke(1.dp, Color.LightGray),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
+    val isDarkTheme = isSystemInDarkTheme()
+    val headerBackgroundColor = if (isDarkTheme) Color.Gray else Color.DarkGray
+    val headerTextColor = Color.White
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(headerBackgroundColor)
+                .padding(horizontal = 8.dp, vertical = 4.dp), // Adjusted padding
+            verticalAlignment = Alignment.CenterVertically // Aligns icon and text vertically
         ) {
-
-            if (address != null) {
-                DetailRow(stringResource(R.string.Address), address)
+            // 1. The Back Button
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.White
+                )
             }
-           DetailRow(stringResource(R.string.Phone_No), school.telephone!!)
-           DetailRow(stringResource(R.string.Session), Session!!)
-
-            if (district != null) {
-                DetailRow(stringResource(R.string.District), district)
-            }
-
-            if (religion != null) {
-                DetailRow(stringResource(R.string.Religion), religion)
-            }
-
-            DetailRow(stringResource(R.string.Category), "${Category} (${Session})")
-
-            Text(text = " Lat: ${school.latitude}")
-            Text(text = " Lng: ${school.longitude}")
-            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = SchoolName,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = headerTextColor,
+                maxLines = 1, // Limits the text to exactly one line
+                overflow = TextOverflow.Ellipsis // Adds the "..." at the end
+            )
         }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+        ) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                border = BorderStroke(3.dp, Color.LightGray),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 10.dp,
+                            vertical = 16.dp
+                        ) // <--- THIS CONTROLS THE WIDTH
+                ) {
+                    if (address != null) {
+                        DetailRow(stringResource(R.string.Address), address)
+                    }
+                    DetailRow(stringResource(R.string.Phone_No), school.telephone!!)
+                    DetailRow(stringResource(R.string.Session), Session!!)
+
+                    if (district != null) {
+                        DetailRow(stringResource(R.string.District), district)
+                    }
+
+                    if (religion != null) {
+                        DetailRow(stringResource(R.string.Religion), religion)
+                    }
+
+                    DetailRow(stringResource(R.string.Category), "${Category} (${Session})")
+
+                    Text(text = " Lat: ${school.latitude}")
+                    Text(text = " Lng: ${school.longitude}")
+                }
+            }
+
         Spacer(modifier = Modifier.height(16.dp))
         if (school.website != null) {
             Button(
@@ -195,4 +247,5 @@ fun SchoolDetailScreen(
         }
     }
 }
+    }
 
