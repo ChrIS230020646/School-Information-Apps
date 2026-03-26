@@ -92,6 +92,18 @@ fun FilterPanelApp(
 
     //  UI STRUCTURE
     Scaffold(
+        topBar = {
+            Surface(
+                shadowElevation = 4.dp, // Adds a subtle shadow to separate from content
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = if (isZh) "篩選器" else "Filters",
+                    style = MaterialTheme.typography.headlineSmall, // Or titleLarge
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        },
         bottomBar = {
             // Bottom button
             Surface(shadowElevation = 8.dp) {
@@ -136,9 +148,10 @@ fun FilterPanelApp(
                             selectedData["districts"] = districtList.filterIndexed { i, _ -> districtChecked[i] }
                             selectedData["religion"] = religionList.filterIndexed { i, _ -> religionChecked[i] }
                             selectedData["category"] = categoryList.filterIndexed { i, _ -> categoryChecked[i] }
-
                             onConfirm(selectedData)
+
                         }
+
                     ) {
                         Text(if (isZh) "搜尋" else "Search")
                     }
