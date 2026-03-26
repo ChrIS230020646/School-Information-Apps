@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -123,6 +124,9 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
                     color = Color.White,
                     shape = RoundedCornerShape(12.dp)
                 )
+                .clickable {
+                    MoveToFavPage(context)
+                }
                 .fillMaxWidth(0.75f) // 佔據 Row 的 80% 寬度
                 .height((16 * 34).dp)
                 .padding(16.dp),
@@ -147,9 +151,18 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
                     .height(320.dp)    // (16 * 20).dp = 320.dp
 //                    .padding(16.dp),
                 // 修正點：將 horizontalArrangement 改為 contentAlignment
-                ,contentAlignment = Alignment.TopEnd // 將 IconButton 放在 Box 的右上角
+                //,contentAlignment = Alignment.TopEnd // 將 IconButton 放在 Box 的右上角
             )
             {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter), // Align to top of the card
+                horizontalArrangement = Arrangement.SpaceBetween, // Pushes elements to opposite sides
+                verticalAlignment = Alignment.CenterVertically // Aligns them vertically
+            ) {
+
+                Text(text = "Favourites")
                 IconButton(
                     onClick = {
                         /* 點擊邏輯 */
@@ -165,6 +178,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
                         tint = Color.Gray
                     )
                 }
+            }
             }
         }
     }
