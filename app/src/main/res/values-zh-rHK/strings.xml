@@ -12,4 +12,5 @@
     <string name="District" >分區</string>
     <string name="Religion" >宗教</string>
     <string name="Category" >類型</string>
+    <string name="Session" >授課時間</string>
 </resources>

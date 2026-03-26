@@ -13,4 +13,6 @@
     <string name="District" >District</string>
     <string name="Religion" >Religion</string>
     <string name="Category" >Category</string>
+    <string name="Session" >School Session</string>
+
 </resources>
