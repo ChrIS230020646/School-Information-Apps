@@ -60,7 +60,7 @@ fun FavItemList(viewModel: SchoolViewModel) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.95f)
-                    .aspectRatio(1f)
+//                    .aspectRatio(1f)
                     .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
                     .background(color = Color.White, shape = RoundedCornerShape(12.dp))
                     .border(
@@ -83,8 +83,8 @@ fun FavItemList(viewModel: SchoolViewModel) {
                         text = displayName,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.fillMaxWidth(),
-                        fontSize = 16.sp
-                        ,lineHeight = 18.sp,
+                        fontSize = 12.sp
+                        ,lineHeight = 14.sp,
 
                         fontWeight = FontWeight.Bold,     // 設定為粗體
 //                        style = MaterialTheme.typography.titleLarge // 或者使用內建的主題樣式
