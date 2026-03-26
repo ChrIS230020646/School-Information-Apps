@@ -100,7 +100,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 currencySelectedFilters=selectedFilters
                 viewModel.onUpdateFilter(selectedFilters)
                 onfilterActiveChange(false)
-
+                SchoolDataHolder.currencySelectedFilters=currencySelectedFilters
                 SchoolDataHolder.isZh=isZh
                 val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)

@@ -155,7 +155,7 @@ fun searchResultScreen(
 //    back: () -> Unit
 ){
     val TAG = "DebugMove" // 定義 Log 標籤
-    var isZh by remember {mutableStateOf(Locale.getDefault().language == "zh")}
+    var isZh = SchoolDataHolder.isZh
     var searchActive by remember { mutableStateOf(false) }
     var filterActive by remember { mutableStateOf(false) }
     var onClickResult by remember { mutableStateOf(false) }
@@ -246,7 +246,7 @@ fun searchResultScreen(
 //                .padding(horizontal = 4.dp),
 //            verticalAlignment = Alignment.CenterVertically
         ) {
-            if(!searchActive && !filterActive)
+            if(!searchActive && !filterActive )
             IconButton(onClick = { (context as? Activity)?.finish() }) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "返回")
             }
