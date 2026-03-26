@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.comp_3132sef.data.local.SchoolDao
+import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.school.FilterViewModel
 
@@ -44,7 +45,13 @@ fun FilterPanelApp(
     val religionList= filterCheckedSet.religionList
     val categoryList= filterCheckedSet.categoryList
     val districtList=filterCheckedSet.districtList
+//    val sessionList =SchoolDataHolder.currencySelectedFilters["sessions"]
+//    val genderList = SchoolDataHolder.currencySelectedFilters["gender"]
+//    val religionList= SchoolDataHolder.currencySelectedFilters["religion"]
+//    val categoryList= SchoolDataHolder.currencySelectedFilters["category"]
+//    val districtList=SchoolDataHolder.currencySelectedFilters["district"]
 
+    val selectSet=SchoolDataHolder.currencySelectedFilters
 
     // 3. States for Checkboxes
 
