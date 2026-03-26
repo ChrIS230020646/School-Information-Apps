@@ -38,7 +38,7 @@ class SchoolRepository(context: Context) {
                     chineseCategory =it.chineseCategory!!,
                     englishAddress =it.englishAddress,
                     chineseAddress =it.chineseAddress,
-                    telephone =it.session,
+                    telephone =it.telephone,
                     district =it.district,
                     chineseDistrict =it.chineseDistrict,
                     website =it.website,
