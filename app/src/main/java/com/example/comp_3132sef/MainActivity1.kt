@@ -1,5 +1,6 @@
 package com.example.comp_3132sef
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -147,7 +148,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
                 IconButton(
                     onClick = {
                         /* 點擊邏輯 */
-                        MoveToFavPage()
+                        MoveToFavPage(context)
                     }
                 ) {
                     Icon(
@@ -201,8 +202,11 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
 //}
 
 
-fun MoveToFavPage() {
-    TODO("Not yet implemented")
+
+fun MoveToFavPage(context: Context) {
+//    val context = LocalContext.current
+    val intent = Intent(context, FavActivity::class.java)
+    context.startActivity(intent)
 }
 
 
