@@ -240,8 +240,8 @@ fun searchResultScreen(
         // --- 頂部欄區域 ---
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .statusBarsPadding() // 避免被狀態欄擋住
+            .fillMaxWidth()
+            .statusBarsPadding() // 避免被狀態欄擋住
 //                .padding(horizontal = 4.dp),
 //            verticalAlignment = Alignment.CenterVertically
         ) {
