@@ -26,24 +26,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.ui.school.SchoolViewModel
 
 @Composable
-fun FavItemList(viewModel: SchoolViewModel,isZh: Boolean ) {
+fun FavItemList(viewModel: SchoolViewModel) {
     // 1. 觀察 ViewModel 中的 StateFlow
     // 加上 initial = emptyList() 確保初始狀態安全
 //    val favorites by viewModel.favorites.collectAsState()
     val favoritesInfo by viewModel.favoriteSchoolEntities.collectAsState()
     // 2. 使用 LazyColumn 建立列表
-
+    var isZh=SchoolDataHolder.isZh
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
             4.dp
             ,top = 0.dp
-            //16.dp
+            //16.dpf
 
         ), // 列表四周留白
 
@@ -53,7 +55,7 @@ fun FavItemList(viewModel: SchoolViewModel,isZh: Boolean ) {
         items(favoritesInfo.toList()) {
                 favorite ->
             val displayName =
-                if (isZh) (favorite.chineseName ?: favorite.englishName)
+                if (SchoolDataHolder.isZh) (favorite.chineseName ?: favorite.englishName)
                 else favorite.englishName
             Box(
                 modifier = Modifier
@@ -78,13 +80,14 @@ fun FavItemList(viewModel: SchoolViewModel,isZh: Boolean ) {
                 ) {
                     // 顯示 Set 中的字串內容
                     Text(
-                        text = favorite.englishName,
+                        text = displayName,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.fillMaxWidth(),
-                        fontSize = 8.sp
-                        ,lineHeight = 10.sp
-                        ,   // 行高等於字體大小，行間距即為 0
-//                        letterSpacing = 1.sp
+                        fontSize = 16.sp
+                        ,lineHeight = 18.sp,
+
+                        fontWeight = FontWeight.Bold,     // 設定為粗體
+//                        style = MaterialTheme.typography.titleLarge // 或者使用內建的主題樣式
                     )
 
 
