@@ -97,11 +97,16 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
             onConfirm = { selectedFilters ->
                 // 1. 執行你的搜尋邏輯
                 println("User selected: $selectedFilters")
-                currencySelectedFilters=selectedFilters
+
                 viewModel.onUpdateFilter(selectedFilters)
                 onfilterActiveChange(false)
-                SchoolDataHolder.currencySelectedFilters=currencySelectedFilters
+                SchoolDataHolder.currencySelectedFilters=selectedFilters
+//                viewModel.onSearchQueryChange(SchoolDataHolder.query)
+                viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
+
                 SchoolDataHolder.isZh=isZh
+                if(context.equals(MainActivity::class.java))
+                    print(1)
                 val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)
 
@@ -167,7 +172,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                         println("搜尋內容: $query")
                         keyboardController?.hide() // 隱藏鍵盤
                         SchoolDataHolder.query= query
-                        SchoolDataHolder.currencySelectedFilters=currencySelectedFilters
+//                        SchoolDataHolder.currencySelectedFilters=currencySelectedFilters
                         onSearch()
                     }) {
                         Icon(
@@ -176,10 +181,12 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                         )
                     }
 
-                    IconButton(onClick = { if (!query.isNotEmpty())
+                    IconButton(onClick = {
+//                        if (!query.isNotEmpty())
 //                        searchActive = false
                         onSearchActiveChange(false)
-                    }) {
+                    }
+                    ) {
                         Icon(Icons.Default.Close, contentDescription = null)
                     }
 

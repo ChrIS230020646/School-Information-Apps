@@ -57,18 +57,17 @@ class MainActivity : ComponentActivity() {
                 val queryText = SchoolDataHolder.query?: ""
                 val filters = SchoolDataHolder.currencySelectedFilters ?: emptyMap()
 
-                val hasFilter = filters.isNotEmpty()
-                val hasQuery = queryText.isNotBlank()
+
 
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    if (hasFilter || hasQuery) {
-                        Log.d("DebugMove", "Mode: Search Result (Q: '$queryText', F: ${filters.size})")
+//                    if (hasFilter || hasQuery) {
+//                        Log.d("DebugMove", "Mode: Search Result (Q: '$queryText', F: ${filters.size})")
                         searchResultScreen(viewModel,SearchSchoolViewModel)
-                    } else {
-                        Log.d("DebugMove", "Mode: Main List (Displaying all items)")
-//                        MainScreen(viewModel)
-                        searchResultScreen(viewModel,SearchSchoolViewModel)
-                    }
+//                    } else {
+//                        Log.d("DebugMove", "Mode: Main List (Displaying all items)")
+////                        MainScreen(viewModel)
+//                        searchResultScreen(viewModel,SearchSchoolViewModel)
+//                    }
                 }
             }
         }
@@ -263,7 +262,9 @@ fun searchResultScreen(
             onClickResultChange = { onClickResult = it },
             onSelectSchoolChange = { selectSchool = it },
             onSearch = {
-                // 執行搜尋邏輯
+                SchoolDataHolder.isZh=isZh
+                val intent = Intent(context, MainActivity::class.java)
+                context.startActivity(intent)
             }
         )
 
