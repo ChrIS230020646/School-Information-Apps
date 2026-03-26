@@ -77,7 +77,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
                 Log.d(TAG, "準備跳轉！目標 ID: ${selectSchool!!.id}")
                 try {
                     SchoolDataHolder.selectedSchool = selectSchool
-                    SchoolDataHolder.isZh=isZh
+//                    SchoolDataHolder.isZh=isZh
 
                     val intent = Intent(context, SearchResultActivity::class.java)
 //                    context.startActivity(intent)
@@ -134,7 +134,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
 
 
             ){
-                FavItemList(viewModel2 , isZh )
+                FavItemList(viewModel2  )
             }
             Box(
                 modifier = Modifier
@@ -168,6 +168,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
         if(!searchActive and !filterActive and !onClickResult) {
             Row() {
                 TextButton(onClick = { isZh = !isZh
+                    SchoolDataHolder.isZh= isZh
                      }) {
                     Text(if (isZh) "EN" else "中")
                 }
