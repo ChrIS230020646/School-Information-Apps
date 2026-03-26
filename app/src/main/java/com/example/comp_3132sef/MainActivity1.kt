@@ -208,6 +208,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
                 .align(Alignment.End)
 
         ){
+            if(!filterActive)
             IconButton(
                 onClick = {
                     val intent = Intent(context, MainActivity::class.java)
