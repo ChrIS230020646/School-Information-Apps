@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.History
@@ -151,7 +152,16 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
 //            onActiveChange = {searchActive = it  },
 //            onActiveChange = { searchActive = it },
             placeholder = { Text("搜尋...") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            leadingIcon = {
+                if (searchActive)
+                IconButton(onClick = {
+                    onSearchActiveChange(false)
+
+                }) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                }
+                if (!searchActive)
+                Icon(Icons.Default.Search, contentDescription = null) },
             trailingIcon = {
                 Row(){
                     if (!searchActive)
@@ -185,9 +195,11 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                     IconButton(onClick = {
 //                        if (!query.isNotEmpty())
 //                        searchActive = false
+                        viewModel.onSearchQueryChange("")
                         onSearchActiveChange(false)
                     }
                     ) {
+
                         Icon(Icons.Default.Close, contentDescription = null)
                     }
 
