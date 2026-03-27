@@ -14,5 +14,16 @@
     <string name="Religion" >Religion</string>
     <string name="Category" >Category</string>
     <string name="Session" >School Session</string>
+    <string name="search_placeholder">Search schools...</string>
+    <string name="btn_clear_all">Clear All</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_search_confirm">Search</string>
+    <string name="btn_filter_desc">Open filters</string>
+    <string name="filter">filter</string>
+    <string name="search_no_results">No results found</string>
+    <string name="Filters">Filters</string>
+    <string name="search">search</string>
+    <string name="language">中</string>
+
 
 </resources>
