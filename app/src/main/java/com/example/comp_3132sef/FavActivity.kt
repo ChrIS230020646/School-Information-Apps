@@ -25,11 +25,14 @@ import java.util.Locale
 
 import android.content.Intent
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.filled.ArrowBack
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
@@ -148,7 +151,9 @@ fun searchResultScreen2(
     viewModel: SchoolViewModel ,
     searchSchoolViewModel:SearchSchoolViewModel,
 //    back: () -> Unit
-){
+){  val isDarkTheme = isSystemInDarkTheme()
+    val headerBackgroundColor = if (isDarkTheme) Color.Gray else Color.DarkGray
+    val headerTextColor = Color.White
     val favoritesInfo by viewModel.favoriteSchoolEntities.collectAsState()
     val TAG = "DebugMove" // 定義 Log 標籤
     var isZh by remember {mutableStateOf(Locale.getDefault().language == "zh")}
@@ -238,13 +243,24 @@ fun searchResultScreen2(
             modifier = Modifier
                 .fillMaxWidth()
                 .statusBarsPadding() // 避免被狀態欄擋住
+                .background(headerBackgroundColor),
+                 verticalAlignment = Alignment.CenterVertically
 //                .padding(horizontal = 4.dp),
 //            verticalAlignment = Alignment.CenterVertically
         ) {
 //            if(!searchActive && !filterActive )
             IconButton(onClick = { (context as? Activity)?.finish() }) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "返回")
-            }
+                Icon(Icons.Default.ArrowBack, contentDescription = "返回",
+                tint = Color.White)
+                }
+            Text(
+                text = "Favourites",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = headerTextColor,
+
+                )
 
 //        searchBarCompose(
 //            searchSchoolViewModel,
