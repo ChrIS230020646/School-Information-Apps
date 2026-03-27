@@ -171,6 +171,7 @@ fun searchResultScreen(
                     val intent = Intent(context, SearchResultActivity::class.java)
 
                     context.startActivity(intent)
+
                     Log.d(TAG, "startActivity 已執行")
                 } catch (e: Exception) {
                     Log.e(TAG, "跳轉失敗: ${e.message}")
@@ -246,7 +247,11 @@ fun searchResultScreen(
 //            verticalAlignment = Alignment.CenterVertically
         ) {
             if(!searchActive && !filterActive )
-            IconButton(onClick = { (context as? Activity)?.finish() }) {
+            IconButton(onClick = {
+                val intent = Intent(context, MainActivity1::class.java)
+                context.startActivity(intent)
+                (context as? Activity)?.finish()
+            }) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "返回")
             }
 
@@ -262,9 +267,11 @@ fun searchResultScreen(
             onClickResultChange = { onClickResult = it },
             onSelectSchoolChange = { selectSchool = it },
             onSearch = {
+                filterActive=false
                 SchoolDataHolder.isZh=isZh
                 val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)
+                (context as? Activity)?.finish()
             }
         )
 

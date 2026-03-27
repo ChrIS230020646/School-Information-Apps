@@ -45,14 +45,8 @@ fun FilterPanelApp(
     val religionList= filterCheckedSet.religionList
     val categoryList= filterCheckedSet.categoryList
     val districtList=filterCheckedSet.districtList
-//    val sessionList =SchoolDataHolder.currencySelectedFilters["sessions"]
-//    val genderList = SchoolDataHolder.currencySelectedFilters["gender"]
-//    val religionList= SchoolDataHolder.currencySelectedFilters["religion"]
-//    val categoryList= SchoolDataHolder.currencySelectedFilters["category"]
-//    val districtList=SchoolDataHolder.currencySelectedFilters["district"]
 
-    val selectSet=SchoolDataHolder.currencySelectedFilters
-
+//    val selectSet=SchoolDataHolder.currencySelectedFilters
     // 3. States for Checkboxes
 
 // Session
@@ -84,6 +78,7 @@ fun FilterPanelApp(
         val saved = selectSet["category"].orEmpty()
         mutableStateOf(List(categoryList.size) { i -> saved.contains(categoryList[i]) })
     }
+
     var isSessionExpanded by rememberSaveable { mutableStateOf(true) }
     var isGenderExpanded by rememberSaveable { mutableStateOf(true) }
     var isReligionExpanded by rememberSaveable { mutableStateOf(true) }
@@ -175,11 +170,7 @@ fun FilterPanelApp(
                         .padding(vertical = 4.dp) // 整個組件與上下內容的間距
                         .clickable { isSessionExpanded = !isSessionExpanded } // 點擊整塊區域觸發
                 ) {
-//                    // line
-//                    HorizontalDivider(
-//                        thickness = 1.dp,
-//                        color = Color.Black.copy(alpha = 0.6f)
-//                    )
+
 
                     // context
                     Row(
@@ -220,11 +211,7 @@ fun FilterPanelApp(
                         .padding(vertical = 4.dp) // 整個組件與上下內容的間距
                         .clickable { isGenderExpanded = !isGenderExpanded } // 點擊整塊區域觸發
                 ) {
-//                    // line
-//                    HorizontalDivider(
-//                        thickness = 1.dp,
-//                        color = Color.Black.copy(alpha = 0.6f)
-//                    )
+
 
                     // context
                     Row(
@@ -354,11 +341,6 @@ fun FilterPanelApp(
                         .padding(vertical = 4.dp) // 整個組件與上下內容的間距
                         .clickable { isCategoryExpanded = !isCategoryExpanded } // 點擊整塊區域觸發
                 ) {
-                    // line
-//                    HorizontalDivider(
-//                        thickness = 1.dp,
-//                        color = Color.Black.copy(alpha = 0.6f)
-//                    )
 
                     // context
                     Row(

@@ -1,5 +1,6 @@
 package com.example.comp_3132sef
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -213,8 +214,9 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
                 onClick = {
                     val intent = Intent(context, MainActivity::class.java)
 //                    context.startActivity(intent)
-
+                    (context as? Activity)?.finish()
                     context.startActivity(intent)
+
                      },
             ) {
                 Icon(
@@ -250,13 +252,16 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
 
                     viewModel.onUpdateFilter(selectedFilters)
                     filterActive=false
+
                     SchoolDataHolder.currencySelectedFilters=selectedFilters
 //                viewModel.onSearchQueryChange(SchoolDataHolder.query)
                     viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
 
                     SchoolDataHolder.isZh=isZh
+                    (context as? Activity)?.finish()
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
+
 
                 },clarAll={
                     currencySelectedFilters = emptyMap()

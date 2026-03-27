@@ -1,5 +1,6 @@
 package com.example.comp_3132sef.ui.search
 
+import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -106,7 +107,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
 
                 SchoolDataHolder.isZh=isZh
                 if(context.equals(MainActivity::class.java))
-                    print(1)
+                    (context as? Activity)?.finish()
                 val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)
 

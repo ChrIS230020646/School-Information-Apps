@@ -51,9 +51,9 @@ class SearchSchoolViewModel(application: Application) : AndroidViewModel(applica
 
             districtsCount = filters["districts"]?.size ?: 0,
 
-            religionsCount = filters["religions"]?.size ?: 0,
+            religionsCount = filters["religion"]?.size ?: 0,
 
-            categoriesCount = filters["categories"]?.size ?: 0
+            categoriesCount = filters["category"]?.size ?: 0
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
     fun onSearchQueryChange(newQuery: String) {

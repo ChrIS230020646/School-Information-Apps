@@ -1,8 +1,10 @@
 package com.example.comp_3132sef.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.example.comp_3132sef.data.local.DatabaseProvider
 import com.example.comp_3132sef.data.local.FavoriteEntity
+import com.example.comp_3132sef.data.local.SchoolDataHolder.refreshSchoolsCount
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.data.remote.ApiClient
 import kotlinx.coroutines.flow.Flow
@@ -23,6 +25,7 @@ class SchoolRepository(context: Context) {
 //        schoolDao.getAllFavoriteSchoolsInfo()
 //            .map { list -> list.map { it.englishName } }
     suspend fun refreshSchools() {
+    Log.d("Debug", "refreshSchools!!"+refreshSchoolsCount++)
         val remote = ApiClient.schoolApi.getSchools()
 
         val entities = remote
@@ -51,6 +54,7 @@ class SchoolRepository(context: Context) {
                 )
             }
 
+    Log.d("Debug", "refreshSchools!!"+refreshSchoolsCount)
         schoolDao.clearAll()
         schoolDao.insertAll(entities)
     }
