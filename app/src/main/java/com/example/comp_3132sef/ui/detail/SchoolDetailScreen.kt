@@ -66,6 +66,9 @@ fun SchoolDetailScreen(
     val SchoolName =
         if (isZh) (school.chineseName ?: school.englishName)
         else school.englishName
+    val SchoolName2 =
+        if (isZh) (school.englishName ?: school.chineseName)
+        else school.chineseName
     val address =
         if (isZh) (school.chineseAddress ?: school.englishAddress)
         else school.englishAddress
