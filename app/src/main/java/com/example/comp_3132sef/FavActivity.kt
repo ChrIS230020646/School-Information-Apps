@@ -24,10 +24,12 @@ import com.example.comp_3132sef.ui.theme.COMP_3132SEFTheme
 import java.util.Locale
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.ui.platform.LocalConfiguration
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -151,16 +153,29 @@ fun searchResultScreen2(
     viewModel: SchoolViewModel ,
     searchSchoolViewModel:SearchSchoolViewModel,
 //    back: () -> Unit
-){  val isDarkTheme = isSystemInDarkTheme()
+){
+
+    val isDarkTheme = isSystemInDarkTheme()
     val headerBackgroundColor = if (isDarkTheme) Color.Gray else Color.DarkGray
     val headerTextColor = Color.White
     val favoritesInfo by viewModel.favoriteSchoolEntities.collectAsState()
     val TAG = "DebugMove" // 定義 Log 標籤
-    var isZh by remember {mutableStateOf(Locale.getDefault().language == "zh")}
 
     var onClickResult by remember { mutableStateOf(false) }
     var selectSchool by remember { mutableStateOf<SchoolEntity?>(null) }
     val context = LocalContext.current
+    var currentLocale by remember(SchoolDataHolder.isZh) {
+        mutableStateOf(if (SchoolDataHolder.isZh) Locale("zh", "HK") else Locale.ENGLISH)
+    }
+    val configuration = Configuration(LocalConfiguration.current).apply {
+        setLocale(currentLocale)
+    }
+    val localizedContext = context.createConfigurationContext(configuration)
+
+    CompositionLocalProvider(
+        LocalConfiguration provides configuration,
+        LocalContext provides localizedContext
+    ) {
     LaunchedEffect(onClickResult) {
         if (onClickResult) {
             if (selectSchool != null) {
@@ -280,7 +295,7 @@ fun searchResultScreen2(
 
 }
 
-    }
+    }}
 
 }
 

@@ -1,5 +1,6 @@
 package com.example.comp_3132sef.ui.detail
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,11 +10,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.comp_3132sef.R
+import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
 import java.util.Locale
@@ -22,36 +26,52 @@ import java.util.Locale
 fun SchoolSearchScreen(viewModel: SearchSchoolViewModel) {
     val query by viewModel.searchQuery.collectAsState()
     val schools by viewModel.searchResults.collectAsState()
+    var currentLocale by remember(SchoolDataHolder.isZh) {
+        mutableStateOf(if (SchoolDataHolder.isZh) Locale("zh", "HK") else Locale.ENGLISH)
+    }
+    val configuration = Configuration(LocalConfiguration.current).apply {
+        setLocale(currentLocale)
+    }
+    val localizedContext = context.createConfigurationContext(configuration)
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text(
-            text = "學校資料搜索",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+    CompositionLocalProvider(
+        LocalConfiguration provides configuration,
+        LocalContext provides localizedContext
+    ) {
+        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Text(
+                text = "學校資料搜索",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
-        // 搜索欄
-        OutlinedTextField(
-            value = query,
+            // 搜索欄
+            OutlinedTextField(
+                value = query,
 
-            onValueChange = { viewModel.onSearchQueryChange(it) },
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("輸入名稱、地址或電話...") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-            shape = MaterialTheme.shapes.medium
-        )
+                onValueChange = { viewModel.onSearchQueryChange(it) },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("輸入名稱、地址或電話...") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                shape = MaterialTheme.shapes.medium
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // 結果列表
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            items(schools) { school ->
-                SchoolCard(school)
+            // 結果列表
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                items(schools) { school ->
+                    SchoolCard(school)
+                }
             }
-        }
 
-        if (schools.isEmpty() && query.isNotEmpty()) {
-            Text("找不到相關學校資料", modifier = Modifier.padding(top = 20.dp), color = Color.Gray)
+            if (schools.isEmpty() && query.isNotEmpty()) {
+                Text(
+                    "找不到相關學校資料",
+                    modifier = Modifier.padding(top = 20.dp),
+                    color = Color.Gray
+                )
+            }
         }
     }
 }

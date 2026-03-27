@@ -91,7 +91,6 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
     if(btnActive) {
         FilterPanelApp(
 //            viewModel = viewModel3,
-            isZh = isZh,
             filterCheckedSet=filterCheckedSet,
             selectSet=currencySelectedFilters,
             onBack = {

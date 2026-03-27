@@ -26,9 +26,11 @@ import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
 import java.util.Locale
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.ui.platform.LocalConfiguration
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -44,7 +46,6 @@ import com.example.comp_3132sef.ui.search.searchBarCompose
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val TAG = "DebugMove" // 定義 Log 標籤
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -160,6 +161,18 @@ fun searchResultScreen(
     var onClickResult by remember { mutableStateOf(false) }
     var selectSchool by remember { mutableStateOf<SchoolEntity?>(null) }
     val context = LocalContext.current
+    var currentLocale by remember(SchoolDataHolder.isZh) {
+        mutableStateOf(if (SchoolDataHolder.isZh) Locale("zh", "HK") else Locale.ENGLISH)
+    }
+    val configuration = Configuration(LocalConfiguration.current).apply {
+        setLocale(currentLocale)
+    }
+    val localizedContext = context.createConfigurationContext(configuration)
+
+    CompositionLocalProvider(
+        LocalConfiguration provides configuration,
+        LocalContext provides localizedContext
+    ) {
     LaunchedEffect(onClickResult) {
         if (onClickResult) {
             if (selectSchool != null) {
@@ -275,7 +288,7 @@ fun searchResultScreen(
             }
         )
 
-}
+}}
 
     }
 

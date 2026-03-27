@@ -27,14 +27,13 @@ import androidx.room.RoomDatabase
 import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolDao
 import com.example.comp_3132sef.data.local.SchoolDataHolder
+import com.example.comp_3132sef.data.local.SchoolDataHolder.isZh
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.school.FilterViewModel
 
 // 1. Data model for the filter state
 @Composable
 fun FilterPanelApp(
-
-    isZh: Boolean,
     filterCheckedSet:FilterCheckedSet,
     selectSet:Map<String, List<String>>,
     clarAll:() ->Unit,

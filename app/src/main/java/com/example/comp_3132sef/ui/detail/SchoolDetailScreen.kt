@@ -33,6 +33,7 @@ import com.google.android.gms.location.LocationServices
 import android.util.Log
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.rememberScrollState
@@ -45,7 +46,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -54,6 +61,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolDataHolder
+import java.util.Locale
 
 @Composable
 fun SchoolDetailScreen(
@@ -83,6 +91,18 @@ fun SchoolDetailScreen(
     val isDarkTheme = isSystemInDarkTheme()
     val headerBackgroundColor = if (isDarkTheme) Color.Gray else Color.DarkGray
     val headerTextColor = Color.White
+    var currentLocale by remember(SchoolDataHolder.isZh) {
+        mutableStateOf(if (SchoolDataHolder.isZh) Locale("zh", "HK") else Locale.ENGLISH)
+    }
+    val configuration = Configuration(LocalConfiguration.current).apply {
+        setLocale(currentLocale)
+    }
+    val localizedContext = context.createConfigurationContext(configuration)
+
+    CompositionLocalProvider(
+        LocalConfiguration provides configuration,
+        LocalContext provides localizedContext
+    ) {
     Column {
         Row(
             modifier = Modifier
@@ -95,7 +115,7 @@ fun SchoolDetailScreen(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
+                    contentDescription = R.string.back.toString(),
                     tint = Color.White
                 )
             }
@@ -252,4 +272,5 @@ fun SchoolDetailScreen(
     }
 }
     }
+}
 
