@@ -19,10 +19,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolDao
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
@@ -93,7 +95,9 @@ fun FilterPanelApp(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = if (isZh) "篩選器" else "Filters",
+                    stringResource(id = R.string.Filters)
+//                    text = if (isZh) "篩選器" else "Filters"
+                    ,
                     style = MaterialTheme.typography.headlineSmall, // Or titleLarge
                     modifier = Modifier.padding(16.dp)
                 )
@@ -121,7 +125,11 @@ fun FilterPanelApp(
 
                         }
                     ) {
-                        Text(if (isZh) "清除全部" else "Clear All")
+                        Text(
+                            //if (isZh) "清除全部" else "Clear All"
+                                stringResource(id = R.string.btn_clear_all)
+                        )
+//                        stringResource(id = R.string.desc_search_icon)
                     }
 
                     // BACK BUTTON

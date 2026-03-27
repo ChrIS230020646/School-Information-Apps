@@ -31,6 +31,7 @@ import java.util.Locale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
@@ -61,6 +62,7 @@ class MainActivity1 : ComponentActivity() {
                 }
             }
         }
+
 
 
     }
@@ -189,11 +191,15 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
             Row() {
                 TextButton(onClick = { isZh = !isZh
                     SchoolDataHolder.isZh= isZh
+
                      }) {
-                    Text(if (isZh) "EN" else "中")
+                    Text(//if (isZh) "EN" else "中"
+                            stringResource(id = R.string.language)
+                    )
                 }
 
             }
+
         }
 //       var searchbarStartPositon= if (!searchActive) 24.dp else 0.dp
 //Box(Modifier.padding( start =searchbarStartPositon,)){
@@ -221,7 +227,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
             ) {
                 Icon(
                     imageVector = Icons.Default.Search, // 或者用 Icons.Default.Tune
-                    contentDescription = if (isZh) "搜尋" else "Search",
+                    contentDescription = stringResource(id = R.string.search),
                     tint = MaterialTheme.colorScheme.primary
                 )}
             if(!filterActive)
@@ -232,7 +238,9 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel , viewModel2: SchoolViewMod
         ) {
             Icon(
                 imageVector = Icons.Default.FilterList, // 或者用 Icons.Default.Tune
-                contentDescription = if (isZh) "篩選" else "Filter",
+                contentDescription =
+                    // if (isZh) "篩選" else "Filter"
+                        stringResource(id = R.string.filter),
                 tint = MaterialTheme.colorScheme.primary
             )
         }}

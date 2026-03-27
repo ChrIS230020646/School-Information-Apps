@@ -37,9 +37,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.comp_3132sef.MainActivity
+import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
@@ -151,7 +153,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
             onActiveChange = onSearchActiveChange,
 //            onActiveChange = {searchActive = it  },
 //            onActiveChange = { searchActive = it },
-            placeholder = { Text("搜尋...") },
+            placeholder = { Text(text = stringResource(id = R.string.search_placeholder)) },
             leadingIcon = {
                 if (searchActive)
                 IconButton(onClick = {
@@ -172,7 +174,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 ) {
                     Icon(
                         imageVector = Icons.Default.FilterList, // 或者用 Icons.Default.Tune
-                        contentDescription = if (isZh) "篩選" else "Filter",
+                        contentDescription = R.string.filter.toString(),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -188,7 +190,8 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                     }) {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = "搜尋按鈕"
+                            contentDescription =R.string.btn_search_confirm.toString(),
+                            //contentDescription = R.string.btn_filter_desc.toString()
                         )
                     }
 
@@ -275,7 +278,7 @@ fun LazyListScope.filteredListIsEmpty() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                "找不到結果",
+                R.string.search_no_results.toString(),
                 color = MaterialTheme.colorScheme.outline
             )
         }
