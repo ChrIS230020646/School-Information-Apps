@@ -19,10 +19,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolDao
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
@@ -45,14 +47,8 @@ fun FilterPanelApp(
     val religionList= filterCheckedSet.religionList
     val categoryList= filterCheckedSet.categoryList
     val districtList=filterCheckedSet.districtList
-//    val sessionList =SchoolDataHolder.currencySelectedFilters["sessions"]
-//    val genderList = SchoolDataHolder.currencySelectedFilters["gender"]
-//    val religionList= SchoolDataHolder.currencySelectedFilters["religion"]
-//    val categoryList= SchoolDataHolder.currencySelectedFilters["category"]
-//    val districtList=SchoolDataHolder.currencySelectedFilters["district"]
 
-    val selectSet=SchoolDataHolder.currencySelectedFilters
-
+//    val selectSet=SchoolDataHolder.currencySelectedFilters
     // 3. States for Checkboxes
 
 // Session
@@ -84,6 +80,7 @@ fun FilterPanelApp(
         val saved = selectSet["category"].orEmpty()
         mutableStateOf(List(categoryList.size) { i -> saved.contains(categoryList[i]) })
     }
+
     var isSessionExpanded by rememberSaveable { mutableStateOf(true) }
     var isGenderExpanded by rememberSaveable { mutableStateOf(true) }
     var isReligionExpanded by rememberSaveable { mutableStateOf(true) }
@@ -98,7 +95,9 @@ fun FilterPanelApp(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = if (isZh) "篩選器" else "Filters",
+                    stringResource(id = R.string.Filters)
+//                    text = if (isZh) "篩選器" else "Filters"
+                    ,
                     style = MaterialTheme.typography.headlineSmall, // Or titleLarge
                     modifier = Modifier.padding(16.dp)
                 )
@@ -126,7 +125,11 @@ fun FilterPanelApp(
 
                         }
                     ) {
-                        Text(if (isZh) "清除全部" else "Clear All")
+                        Text(
+                            //if (isZh) "清除全部" else "Clear All"
+                                stringResource(id = R.string.btn_clear_all)
+                        )
+//                        stringResource(id = R.string.desc_search_icon)
                     }
 
                     // BACK BUTTON
@@ -176,11 +179,7 @@ fun FilterPanelApp(
                         .padding(vertical = 4.dp) // 整個組件與上下內容的間距
                         .clickable { isSessionExpanded = !isSessionExpanded } // 點擊整塊區域觸發
                 ) {
-//                    // line
-//                    HorizontalDivider(
-//                        thickness = 1.dp,
-//                        color = Color.Black.copy(alpha = 0.6f)
-//                    )
+
 
                     // context
                     Row(
@@ -221,11 +220,7 @@ fun FilterPanelApp(
                         .padding(vertical = 4.dp) // 整個組件與上下內容的間距
                         .clickable { isGenderExpanded = !isGenderExpanded } // 點擊整塊區域觸發
                 ) {
-//                    // line
-//                    HorizontalDivider(
-//                        thickness = 1.dp,
-//                        color = Color.Black.copy(alpha = 0.6f)
-//                    )
+
 
                     // context
                     Row(
@@ -355,11 +350,6 @@ fun FilterPanelApp(
                         .padding(vertical = 4.dp) // 整個組件與上下內容的間距
                         .clickable { isCategoryExpanded = !isCategoryExpanded } // 點擊整塊區域觸發
                 ) {
-                    // line
-//                    HorizontalDivider(
-//                        thickness = 1.dp,
-//                        color = Color.Black.copy(alpha = 0.6f)
-//                    )
 
                     // context
                     Row(

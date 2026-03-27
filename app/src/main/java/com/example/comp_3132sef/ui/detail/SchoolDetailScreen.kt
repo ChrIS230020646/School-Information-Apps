@@ -53,7 +53,7 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.comp_3132sef.R
-import com.example.comp_3132sef.data.local.SchoolDataHolder.isZh
+import com.example.comp_3132sef.data.local.SchoolDataHolder
 
 @Composable
 fun SchoolDetailScreen(
@@ -61,6 +61,7 @@ fun SchoolDetailScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
+    var isZh=SchoolDataHolder.isZh
     //make the data respond to language
     val SchoolName =
         if (isZh) (school.chineseName ?: school.englishName)

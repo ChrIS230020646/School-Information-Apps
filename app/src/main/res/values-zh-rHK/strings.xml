@@ -13,4 +13,14 @@
     <string name="Religion" >宗教</string>
     <string name="Category" >類型</string>
     <string name="Session" >授課時間</string>
+    <string name="search_placeholder">搜尋學校...</string>
+    <string name="btn_clear_all">清除全部</string>
+    <string name="btn_back">返回</string>
+    <string name="btn_search_confirm">搜尋</string>
+    <string name="btn_filter_desc">開啟篩選器</string>
+    <string name="filter">篩選</string>
+    <string name="search_no_results">找不到相關結果</string>
+    <string name="Filters">篩選</string>
+    <string name="search">搜尋</string>
+    <string name="language">EN</string>
 </resources>

@@ -167,8 +167,8 @@ fun searchResultScreen2(
                 Log.d(TAG, "準備跳轉！目標 ID: ${selectSchool!!.id}")
                 try {
                     SchoolDataHolder.selectedSchool = selectSchool
-                    SchoolDataHolder.isZh=isZh
-
+//                    SchoolDataHolder.isZh=isZh
+                    onClickResult=false
                     val intent = Intent(context, SearchResultActivity::class.java)
 
                     context.startActivity(intent)

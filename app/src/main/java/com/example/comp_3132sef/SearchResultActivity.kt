@@ -18,7 +18,7 @@ class SearchResultActivity : ComponentActivity() {
         val school = SchoolDataHolder.selectedSchool
         // 2. 顯示 UI (Display UI)
         setContent {
-            Text(if (isZh) "EN" else "中")
+//            Text(if (isZh) "EN" else "中")
             if (school != null) {
                 // 這裡可以呼叫你的 SchoolDetailScreen
                 // Call your SchoolDetailScreen here

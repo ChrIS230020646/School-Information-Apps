@@ -1,5 +1,6 @@
 package com.example.comp_3132sef.ui.search
 
+import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.History
@@ -35,9 +37,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.comp_3132sef.MainActivity
+import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
@@ -106,7 +110,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
 
                 SchoolDataHolder.isZh=isZh
                 if(context.equals(MainActivity::class.java))
-                    print(1)
+                    (context as? Activity)?.finish()
                 val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)
 
@@ -149,8 +153,17 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
             onActiveChange = onSearchActiveChange,
 //            onActiveChange = {searchActive = it  },
 //            onActiveChange = { searchActive = it },
-            placeholder = { Text("搜尋...") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            placeholder = { Text(text = stringResource(id = R.string.search_placeholder)) },
+            leadingIcon = {
+                if (searchActive)
+                IconButton(onClick = {
+                    onSearchActiveChange(false)
+
+                }) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                }
+                if (!searchActive)
+                Icon(Icons.Default.Search, contentDescription = null) },
             trailingIcon = {
                 Row(){
                     if (!searchActive)
@@ -161,7 +174,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 ) {
                     Icon(
                         imageVector = Icons.Default.FilterList, // 或者用 Icons.Default.Tune
-                        contentDescription = if (isZh) "篩選" else "Filter",
+                        contentDescription = R.string.filter.toString(),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -177,16 +190,19 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                     }) {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = "搜尋按鈕"
+                            contentDescription =R.string.btn_search_confirm.toString(),
+                            //contentDescription = R.string.btn_filter_desc.toString()
                         )
                     }
 
                     IconButton(onClick = {
 //                        if (!query.isNotEmpty())
 //                        searchActive = false
+                        viewModel.onSearchQueryChange("")
                         onSearchActiveChange(false)
                     }
                     ) {
+
                         Icon(Icons.Default.Close, contentDescription = null)
                     }
 
@@ -262,7 +278,7 @@ fun LazyListScope.filteredListIsEmpty() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                "找不到結果",
+                R.string.search_no_results.toString(),
                 color = MaterialTheme.colorScheme.outline
             )
         }
