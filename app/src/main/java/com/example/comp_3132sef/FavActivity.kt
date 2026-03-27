@@ -168,7 +168,7 @@ fun searchResultScreen2(
                 try {
                     SchoolDataHolder.selectedSchool = selectSchool
 //                    SchoolDataHolder.isZh=isZh
-
+                    onClickResult=false
                     val intent = Intent(context, SearchResultActivity::class.java)
 
                     context.startActivity(intent)
