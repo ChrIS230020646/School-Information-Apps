@@ -269,7 +269,7 @@ fun searchResultScreen2(
                 tint = Color.White)
                 }
             Text(
-                text = "Favourites",
+                text = stringResource(R.string.favourites),
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
                 modifier = Modifier.padding(bottom = 8.dp),

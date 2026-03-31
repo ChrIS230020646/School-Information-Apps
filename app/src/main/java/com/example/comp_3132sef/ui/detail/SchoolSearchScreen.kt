@@ -32,11 +32,11 @@ fun SchoolSearchScreen(viewModel: SearchSchoolViewModel) {
     val configuration = Configuration(LocalConfiguration.current).apply {
         setLocale(currentLocale)
     }
-    val localizedContext = context.createConfigurationContext(configuration)
+   // val localizedContext = context.createConfigurationContext(configuration)
 
     CompositionLocalProvider(
         LocalConfiguration provides configuration,
-        LocalContext provides localizedContext
+       // LocalContext provides localizedContext
     ) {
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             Text(

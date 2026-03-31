@@ -134,7 +134,17 @@ fun SchoolDetailScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
-        ) {
+        ) { Text(
+            text = SchoolName,
+            fontSize = 28.sp, // Large font size
+            lineHeight = 34.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = if (isDarkTheme) Color.White else Color.Black,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp) // Space between name and the box
+        )
+
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
