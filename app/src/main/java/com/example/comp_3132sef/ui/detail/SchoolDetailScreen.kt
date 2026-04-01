@@ -2,7 +2,9 @@ package com.example.comp_3132sef.ui.detail
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Button
+    import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -187,7 +189,8 @@ fun SchoolDetailScreen(
                     val uri = Uri.parse(school.website)
                     context.startActivity(Intent(Intent.ACTION_VIEW, uri))
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
             ) {
                 Text(stringResource(R.string.school_website)) // Add a string resource for the button label
             }
@@ -202,9 +205,11 @@ fun SchoolDetailScreen(
                 )
                 context.startActivity(Intent(Intent.ACTION_VIEW, uri))
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
         ) {
             Text(stringResource(R.string.open_in_maps))
+
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -265,7 +270,8 @@ fun SchoolDetailScreen(
                         context.startActivity(Intent(Intent.ACTION_VIEW, uri))
                     }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
         ) {
             //   & "C:\Users\**users_name**\AppData\Local\Android\Sdk\platform-tools\adb.exe" emu geo fix 114.1694 22.3193
             Text(stringResource(R.string.navigate))
@@ -275,7 +281,8 @@ fun SchoolDetailScreen(
 
         Button(
             onClick = onBack,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCD5C5C))
         ) {
             Text(stringResource(R.string.back))
         }
