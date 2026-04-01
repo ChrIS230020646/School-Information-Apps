@@ -1,6 +1,8 @@
 package com.example.comp_3132sef
 
 import android.app.Activity
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -100,39 +102,58 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
-            // 背景收藏卡片
+            // 1. Background Content (Logo + Favourites Card)
             Row(
-                verticalAlignment = BiasAlignment.Vertical(0.1f),
+                modifier = Modifier.fillMaxSize(),
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize()
+                // Using a lower bias (e.g., 0.3f) moves the whole stack down to avoid top icons
+                verticalAlignment = BiasAlignment.Vertical(0.3f)
             ) {
-                Box(
-                    modifier = Modifier
-                        .shadow(8.dp, RoundedCornerShape(12.dp))
-                        .background(Color.White, RoundedCornerShape(12.dp))
-                        .clickable { MoveToFavPage(context) }
-                        .fillMaxWidth(0.75f)
-                        .height(540.dp)
-                        .padding(16.dp),
+                // THIS COLUMN IS THE KEY: It stacks the image on top of the card
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth(0.75f) // The whole stack is 75% wide
                 ) {
-                    Column {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            // 這裡已改為 stringResource
-                            Text(text = stringResource(id = R.string.favourites))
-                            IconButton(onClick = { MoveToFavPage(context) }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Star,
-                                    contentDescription = null,
-                                    tint = Color.Gray
+                    // THE IMAGE
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "App Logo",
+                        modifier = Modifier
+                            .size(180.dp) // Set your desired size
+                            .padding(bottom = 24.dp) // Creates space between logo and card
+                    )
+
+                    // THE FAVOURITES CARD
+                    Box(
+                        modifier = Modifier
+                            .shadow(8.dp, RoundedCornerShape(12.dp))
+                            .background(Color.White, RoundedCornerShape(12.dp))
+                            .clickable { MoveToFavPage(context) }
+                            .fillMaxWidth() // Fills the 75% width of the parent Column
+                            .height(450.dp) // Adjusted height to fit better with the image
+                            .padding(16.dp),
+                    ) {
+                        Column {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.favourites),
+                                    style = MaterialTheme.typography.titleMedium
                                 )
+                                IconButton(onClick = { MoveToFavPage(context) }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Star,
+                                        contentDescription = null,
+                                        tint = Color.Gray
+                                    )
+                                }
                             }
-                        }
-                        Box(modifier = Modifier.padding(top = 16.dp)) {
-                            FavItemList(viewModel2)
+                            Box(modifier = Modifier.padding(top = 16.dp)) {
+                                FavItemList(viewModel2)
+                            }
                         }
                     }
                 }
