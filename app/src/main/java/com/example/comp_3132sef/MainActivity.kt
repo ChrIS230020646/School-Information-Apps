@@ -118,7 +118,7 @@ fun SchoolCard(school: SchoolEntity,onClick: ()->Unit) {
             if (address != null) {
                 DetailRow(stringResource(R.string.Address), address)
             }
-            DetailRow(stringResource(R.string.Phone_No), school.telephone!!)
+            DetailRow(stringResource(R.string.Phone_No), school.telephone ?: "N/A")
 
             if (district != null) {
                 DetailRow(stringResource(R.string.District), district)
@@ -128,14 +128,18 @@ fun SchoolCard(school: SchoolEntity,onClick: ()->Unit) {
                 DetailRow(stringResource(R.string.Religion), religion)
             }
 
-            DetailRow(stringResource(R.string.Category), "${Category} (${Session})")
+            DetailRow(stringResource(R.string.Category), "${Category ?: ""} (${Session ?: ""})")
 
-            Text(
-                text = school.website!!,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(top = 8.dp),
-                style = MaterialTheme.typography.bodySmall
-            )
+            school.website?.let { url ->
+                if (url.isNotEmpty()) {
+                    Text(
+                        text = url,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(top = 8.dp),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
         }
     }
 }
@@ -350,4 +354,3 @@ fun searchResultScreen(
 //        SchoolListScreen(viewModel)
 //    }
 //}
-

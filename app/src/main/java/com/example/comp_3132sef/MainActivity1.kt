@@ -1,8 +1,6 @@
 package com.example.comp_3132sef
 
 import android.app.Activity
-import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -18,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -65,177 +62,161 @@ class MainActivity1 : ComponentActivity() {
 @Composable
 fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewModel) {
     val TAG = "LocaleDebug"
+    // 這是原始的 Activity Context，用於 startActivity 確保不崩潰
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    // --- 語系狀態管理 (統一由 SchoolDataHolder 控制) ---
+    // --- 語系狀態管理 ---
     var currentLocale by remember(SchoolDataHolder.isZh) {
         mutableStateOf(if (SchoolDataHolder.isZh) Locale("zh", "HK") else Locale.ENGLISH)
     }
 
-    // 建立新的配置與 Context
     val configuration = Configuration(LocalConfiguration.current).apply {
         setLocale(currentLocale)
     }
+    // 這是用於顯示語系的 Context
     val localizedContext = context.createConfigurationContext(configuration)
 
-    // --- 其他 UI 狀態 ---
-    var searchActive by remember { mutableStateOf(false) }
+    // --- UI 狀態 ---
     var filterActive by remember { mutableStateOf(false) }
     var onClickResult by remember { mutableStateOf(false) }
     var selectSchool by remember { mutableStateOf<SchoolEntity?>(null) }
     var currencySelectedFilters by remember { mutableStateOf<Map<String, List<String>>>(emptyMap()) }
 
-    // 使用 Provider 注入配置，讓 stringResource(R.string.xxx) 生效
     CompositionLocalProvider(
         LocalConfiguration provides configuration,
         LocalContext provides localizedContext
     ) {
-        // 監聽跳轉
+        // 監聽單個學校跳轉 (SearchResultActivity)
         LaunchedEffect(onClickResult) {
             if (onClickResult && selectSchool != null) {
                 SchoolDataHolder.selectedSchool = selectSchool
+                // 核心修復：使用原始 context 跳轉
                 context.startActivity(Intent(context, SearchResultActivity::class.java))
                 onClickResult = false
-                searchActive = false
             }
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
-            // 1. Background Content (Logo + Favourites Card)
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.Center,
-                // Using a lower bias (e.g., 0.3f) moves the whole stack down to avoid top icons
-                verticalAlignment = BiasAlignment.Vertical(0.3f)
-            ) {
-                // THIS COLUMN IS THE KEY: It stacks the image on top of the card
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth(0.75f) // The whole stack is 75% wide
-                ) {
-                    // THE IMAGE
-                    Image(
-                        painter = painterResource(id = R.drawable.logo),
-                        contentDescription = "App Logo",
-                        modifier = Modifier
-                            .size(180.dp) // Set your desired size
-                            .padding(bottom = 24.dp) // Creates space between logo and card
-                    )
 
-                    // THE FAVOURITES CARD
-                    Box(
-                        modifier = Modifier
-                            .shadow(8.dp, RoundedCornerShape(12.dp))
-                            .background(Color.White, RoundedCornerShape(12.dp))
-                            .clickable { MoveToFavPage(context) }
-                            .fillMaxWidth() // Fills the 75% width of the parent Column
-                            .height(450.dp) // Adjusted height to fit better with the image
-                            .padding(16.dp),
-                    ) {
-                        Column {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.favourites),
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-                                IconButton(onClick = { MoveToFavPage(context) }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Star,
-                                        contentDescription = null,
-                                        tint = Color.Gray
-                                    )
-                                }
+            // 1. 背景層：收藏卡片 (置中偏上)
+            Row(
+                verticalAlignment = BiasAlignment.Vertical(0.1f),
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .shadow(8.dp, RoundedCornerShape(12.dp))
+                        .background(Color.White, RoundedCornerShape(12.dp))
+                        .clickable { MoveToFavPage(context) }
+                        .fillMaxWidth(0.85f)
+                        .height(540.dp)
+                        .padding(16.dp),
+                ) {
+                    Column {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.favourites),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            IconButton(onClick = { MoveToFavPage(context) }) {
+                                Icon(Icons.Filled.Star, contentDescription = null, tint = Color.Gray)
                             }
-                            Box(modifier = Modifier.padding(top = 16.dp)) {
-                                FavItemList(viewModel2)
-                            }
+                        }
+                        Box(modifier = Modifier.padding(top = 16.dp)) {
+                            FavItemList(viewModel2)
                         }
                     }
                 }
             }
 
-            // 前景 UI
+            // 2. 前景層：控制區域 (頂部操作列)
             Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
 
-                    Row {
-                        if (!searchActive && !filterActive && !onClickResult)
-                        TextButton(onClick = {
-                            // 切換語系狀態
-                            val targetIsZh = !SchoolDataHolder.isZh
-                            SchoolDataHolder.isZh = targetIsZh
-                            currentLocale = if (targetIsZh) Locale("zh", "HK") else Locale.ENGLISH
-                            Log.d(TAG, "切換至: ${currentLocale.language}")
-                        }) {
-                            Text(text = stringResource(id = R.string.language))
-                        }
-                        // 功能按鈕區域
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth() // 佔滿寬度，以便將內容推向右側
-                                .padding(top = 8.dp, end = 8.dp), // 給頂部和右側留一點邊距
-                            horizontalArrangement = Arrangement.End, // 關鍵：將內容推向右端
-                            verticalAlignment = Alignment.CenterVertically
-
-                        ){
-                            if(!filterActive)
-                                IconButton(
-                                    onClick = {
-                                        val intent = Intent(context, MainActivity::class.java)
-//                    context.startActivity(intent)
-                                        (context as? Activity)?.finish()
-                                        context.startActivity(intent)
-
-                                    },
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Search, // 或者用 Icons.Default.Tune
-                                        contentDescription = stringResource(id = R.string.search),
-                                        tint = MaterialTheme.colorScheme.primary
-                                    )}
-                            if(!filterActive)
-                                IconButton(
-                                    onClick = {
-                                        keyboardController?.hide()
-                                        filterActive=true },
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.FilterList, // 或者用 Icons.Default.Tune
-                                        contentDescription =
-                                            // if (isZh) "篩選" else "Filter"
-                                            stringResource(id = R.string.filter),
-                                        tint = MaterialTheme.colorScheme.primary
-                                    )
-                                }}
+                // 頂部橫列：左邊切換語系，右邊功能按鈕
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // 左上角：語系切換
+                    TextButton(onClick = {
+                        val targetIsZh = !SchoolDataHolder.isZh
+                        SchoolDataHolder.isZh = targetIsZh
+                        // 這會觸發 remember(SchoolDataHolder.isZh) 重新組合
+                    }) {
+                        Text(text = stringResource(id = R.string.language))
                     }
 
+                    // 右上角：搜尋與篩選圖標
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (!filterActive) {
+                            IconButton(onClick = {
+                                val intent = Intent(context, MainActivity::class.java)
+                                (context as? Activity)?.finish()
+                                context.startActivity(intent)
+                            }) {
+                                Icon(
+                                    Icons.Default.Search,
+                                    contentDescription = stringResource(id = R.string.search),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            IconButton(onClick = {
+                                keyboardController?.hide()
+                                filterActive = true
+                            }) {
+                                Icon(
+                                    Icons.Default.FilterList,
+                                    contentDescription = stringResource(id = R.string.filter),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+                    }
+                }
 
+                // 推開中間空間
                 Spacer(modifier = Modifier.weight(1f))
 
-
-
+                // 3. 篩選面板 (當開啟時)
                 if (filterActive) {
                     val viewModel3: FilterViewModel = viewModel()
-                    // 注意：這裡直接傳入 SchoolDataHolder.isZh 確保跟隨切換
                     val filterCheckedSet = rememberFilterCheckedSet(viewModel3, SchoolDataHolder.isZh)
 
                     FilterPanelApp(
                         filterCheckedSet = filterCheckedSet,
                         selectSet = currencySelectedFilters,
                         onBack = { filterActive = false },
-                        onConfirm = { selectedFilters ->
-                            viewModel.onUpdateFilter(selectedFilters)
-                            SchoolDataHolder.currencySelectedFilters = selectedFilters
+                        onConfirm = { _ ->
+                            // 修復點：從 filterCheckedSet 獲取所有勾選的內容並存入 DataHolder
+                            val selected = mapOf(
+                                "sessions" to filterCheckedSet.getSelectedList("sessions"),
+                                "districts" to filterCheckedSet.getSelectedList("districts"),
+                                "genders" to filterCheckedSet.getSelectedList("genders"),
+                                "religions" to filterCheckedSet.getSelectedList("religions"),
+                                "categories" to filterCheckedSet.getSelectedList("categories")
+                            )
+
+                            SchoolDataHolder.currencySelectedFilters = selected
+                            viewModel.onUpdateFilter(selected)
                             filterActive = false
 
+                            // 重啟主頁以刷新列表內容
+                            val intent = Intent(context, MainActivity::class.java)
                             (context as? Activity)?.finish()
-                            context.startActivity(Intent(context, MainActivity::class.java))
+                            context.startActivity(intent)
                         },
-                        clarAll = { currencySelectedFilters = emptyMap() }
+                        clarAll = {
+                            currencySelectedFilters = emptyMap()
+                            // 同時清空 DataHolder 內緩存的過濾條件
+                            SchoolDataHolder.currencySelectedFilters = emptyMap()
+                        }
                     )
                 }
             }

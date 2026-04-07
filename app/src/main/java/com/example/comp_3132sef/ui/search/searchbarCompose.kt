@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.comp_3132sef.MainActivity
 import com.example.comp_3132sef.R
+import com.example.comp_3132sef.SearchResultActivity
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
@@ -110,9 +111,11 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 SchoolDataHolder.isZh=isZh
                 if(context.equals(MainActivity::class.java))
                     (context as? Activity)?.finish()
-                val intent = Intent(context, MainActivity::class.java)
+                val intent = Intent(context, SearchResultActivity::class.java).apply {
+                    // 加入這個 Flag
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
                 context.startActivity(intent)
-
             },clarAll={
                 currencySelectedFilters = emptyMap()
             }
