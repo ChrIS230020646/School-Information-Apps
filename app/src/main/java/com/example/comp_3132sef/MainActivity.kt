@@ -40,6 +40,7 @@ import androidx.room.util.TableInfo
 import androidx.room.util.getColumnIndex
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
+import com.example.comp_3132sef.ui.detail.DetailRow
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
 import com.example.comp_3132sef.ui.search.searchBarCompose
 
@@ -91,6 +92,8 @@ fun SchoolCard(school: SchoolEntity,onClick: ()->Unit) {
     else school.englishCategory
     val Session = if (isZh) (school.chineseSession ?: school.session)
     else school.session
+    val gender = if (isZh) (school.chineseStudentsGender ?: school.studentsGender)
+else school.studentsGender
     Card(
         modifier = Modifier.fillMaxWidth()
             .clickable {onClick() },
@@ -125,7 +128,9 @@ fun SchoolCard(school: SchoolEntity,onClick: ()->Unit) {
             if (religion != null) {
                 DetailRow(stringResource(R.string.Religion), religion)
             }
-
+            if (gender != null) {
+                DetailRow(stringResource(R.string.gender), gender)
+            }
             DetailRow(stringResource(R.string.Category), "${Category ?: ""} (${Session ?: ""})")
 
             school.website?.let { url ->
