@@ -26,6 +26,7 @@
     <string name="search">search</string>
     <string name="language">中</string>
     <string name="favourites">Favourites</string>
+    <string name="gender">Gender</string>
 
 
 </resources>

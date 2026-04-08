@@ -102,8 +102,9 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 // 1. 執行你的搜尋邏輯
                 println("User selected: $selectedFilters")
 
-                viewModel.onUpdateFilter(selectedFilters)
+//                viewModel.onUpdateFilter(selectedFilters)
                 onfilterActiveChange(false)
+                viewModel.clearAllFilters()
                 SchoolDataHolder.currencySelectedFilters=selectedFilters
 //                viewModel.onSearchQueryChange(SchoolDataHolder.query)
                 viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)

@@ -96,6 +96,8 @@ fun SchoolDetailScreen(
     else school.englishCategory
     val Session = if (isZh) (school.chineseSession ?: school.session)
     else school.session
+    val gender = if (isZh) (school.chineseStudentsGender ?: school.studentsGender)
+    else school.studentsGender
     val isDarkTheme = isSystemInDarkTheme()
     val BackgroundColor = if (isDarkTheme) Color.Black else Color.White
 
@@ -196,7 +198,9 @@ fun SchoolDetailScreen(
                     if (religion != null) {
                         DetailRow(stringResource(R.string.Religion), religion)
                     }
-
+                    if (gender != null) {
+                        DetailRow(stringResource(R.string.gender), gender)
+                    }
                     DetailRow(stringResource(R.string.Category), "${Category} (${Session})")
 
                     Text(text = " Lat: ${school.latitude}")

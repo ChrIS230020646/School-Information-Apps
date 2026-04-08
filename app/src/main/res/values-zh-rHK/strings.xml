@@ -25,4 +25,5 @@
     <string name="search">搜尋</string>
     <string name="language">EN</string>
     <string name="favourites">我的最愛</string>
+    <string name="gender">Gender</string>
 </resources>

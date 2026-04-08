@@ -58,6 +58,10 @@ class SearchSchoolViewModel(application: Application) : AndroidViewModel(applica
     fun onUpdateFilter(filter: Map<String, List<String>>) {
         _searchFilter.value = filter
     }
+    fun clearAllFilters() {
+        _searchFilter.value = emptyMap()
+        Log.d("SearchVM", "Filters have been cleared.")
+    }
     private val _selectedSchool = MutableStateFlow<SchoolEntity?>(null)
 
     val selectedSchool: StateFlow<SchoolEntity?> = _selectedSchool.asStateFlow()
