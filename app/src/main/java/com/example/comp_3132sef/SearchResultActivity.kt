@@ -11,7 +11,6 @@ import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.ui.detail.SchoolDetailScreen
 import com.example.comp_3132sef.ui.school.SchoolViewModel
 import com.example.comp_3132sef.ui.theme.COMP_3132SEFTheme
-
 class SearchResultActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,12 +21,13 @@ class SearchResultActivity : ComponentActivity() {
         setContent {
             Surface(color = MaterialTheme.colorScheme.background) {
                 COMP_3132SEFTheme {
-            val viewModel: SchoolViewModel = viewModel()
+//            val viewModel: SchoolViewModel = viewModel()
 
             if (school != null) {
                 // Call your SchoolDetailScreen here
 
-                SchoolDetailScreen(school = school, onBack = { finish() }
+                SchoolDetailScreen(school = school, onBack = { finish()
+                }
                 )
             } else {
 

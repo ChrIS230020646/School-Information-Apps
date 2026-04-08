@@ -109,10 +109,11 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
 
                 SchoolDataHolder.isZh=isZh
+                SchoolDataHolder.selectedSchool=null
                 if(context.equals(MainActivity::class.java))
                     (context as? Activity)?.finish()
                 val intent = Intent(context, SearchResultActivity::class.java).apply {
-                    // 加入這個 Flag
+
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 }
                 context.startActivity(intent)
@@ -238,6 +239,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                                 onSelectSchoolChange(school)
                                 onClickResultChange(true)
                                 onSearchActiveChange(false)
+                                onfilterActiveChange(false)
 //                                searchActive = false
 
                             }
