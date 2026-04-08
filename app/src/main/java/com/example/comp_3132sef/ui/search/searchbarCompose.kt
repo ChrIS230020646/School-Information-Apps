@@ -89,7 +89,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
     var currencySelectedFilters by remember { mutableStateOf<Map<String, List<String>>>(emptyMap()) }
     val filterCheckedSet = rememberFilterCheckedSet(viewModel3, isZh)
 
-
+    currencySelectedFilters=SchoolDataHolder.currencySelectedFilters
     if(btnActive) {
         FilterPanelApp(
 //            viewModel = viewModel3,
@@ -109,7 +109,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 viewModel.clearAllFilters()
                 SchoolDataHolder.currencySelectedFilters=selectedFilters
                 Log.d("FilterLog", "currencySelectedFilters: $currencySelectedFilters")
-                viewModel.onSearchQueryChange(SchoolDataHolder.query.trim())
+//                viewModel.onSearchQueryChange(SchoolDataHolder.query.trim())
                 viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
                 currencySelectedFilters=selectedFilters
                 SchoolDataHolder.isZh=isZh
@@ -150,11 +150,15 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 ,
             query = query,
             onQueryChange = {
-                SchoolDataHolder.query= query
+
                 viewModel.onSearchQueryChange(it.trim())
                  },
             onSearch = {
 //                searchActive = false
+                Log.d("SchoolDataHolder.query=",SchoolDataHolder.query)
+                Log.d("query",query)
+                SchoolDataHolder.query= query
+                Log.d("SchoolDataHolder.query=",SchoolDataHolder.query)
                 onSearchActiveChange(false)
                        },
             active = searchActive,
@@ -191,8 +195,11 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                     IconButton(onClick = {
                         // 執行搜尋邏輯
                         println("搜尋內容: $query")
+                        Log.d("SchoolDataHolder.query=",SchoolDataHolder.query)
+                        Log.d("query",query)
                         keyboardController?.hide() // 隱藏鍵盤
                         SchoolDataHolder.query= query
+                        Log.d("SchoolDataHolder.query=",SchoolDataHolder.query)
 //                        SchoolDataHolder.currencySelectedFilters=currencySelectedFilters
                         onSearch()
                     }) {
