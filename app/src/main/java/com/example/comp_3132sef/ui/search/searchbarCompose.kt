@@ -111,7 +111,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 Log.d("FilterLog", "currencySelectedFilters: $currencySelectedFilters")
 //                viewModel.onSearchQueryChange(SchoolDataHolder.query)
                 viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
-
+                currencySelectedFilters=selectedFilters
                 SchoolDataHolder.isZh=isZh
                 SchoolDataHolder.selectedSchool=null
                 if(context.equals(MainActivity::class.java))
@@ -148,7 +148,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 .padding(top = if (searchActive) 0.dp else 4.dp)
 //                .fillMaxWidth(if (searchActive) 1f else 0.93f)
                 ,
-            query = query,
+            query = query.trim(),
             onQueryChange = {
                 viewModel.onSearchQueryChange(it)
                  },
