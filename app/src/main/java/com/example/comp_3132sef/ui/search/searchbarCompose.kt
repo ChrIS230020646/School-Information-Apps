@@ -2,6 +2,7 @@ package com.example.comp_3132sef.ui.search
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -101,11 +102,13 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
             onConfirm = { selectedFilters ->
                 // 1. 執行你的搜尋邏輯
                 println("User selected: $selectedFilters")
+                Log.d("FilterLog", "selectedFilters: $selectedFilters")
 
 //                viewModel.onUpdateFilter(selectedFilters)
                 onfilterActiveChange(false)
                 viewModel.clearAllFilters()
                 SchoolDataHolder.currencySelectedFilters=selectedFilters
+                Log.d("FilterLog", "currencySelectedFilters: $currencySelectedFilters")
 //                viewModel.onSearchQueryChange(SchoolDataHolder.query)
                 viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
 

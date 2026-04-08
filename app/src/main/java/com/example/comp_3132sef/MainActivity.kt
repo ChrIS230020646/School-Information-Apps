@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                 // 使用更安全的判斷方式 (Use safer null checks)
                 val queryText = SchoolDataHolder.query?: ""
                 val filters = SchoolDataHolder.currencySelectedFilters ?: emptyMap()
-
+                SearchSchoolViewModel.onUpdateFilter(filters)
 
 
                 Surface(modifier = Modifier.fillMaxSize()) {
@@ -265,6 +265,9 @@ fun searchResultScreen(
                     IconButton(
                         modifier = Modifier.padding(top = 16.dp),
                         onClick = {
+                            searchSchoolViewModel.onSearchQueryChange("")
+                            SchoolDataHolder.currencySelectedFilters= emptyMap()
+
                             val intent = Intent(context, MainActivity1::class.java)
                             context.startActivity(intent)
                             (context as? Activity)?.finish()

@@ -181,31 +181,58 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
                     val viewModel3: FilterViewModel = viewModel()
                     val filterCheckedSet = rememberFilterCheckedSet(viewModel3, SchoolDataHolder.isZh)
 
+//                    FilterPanelApp(
+//                        filterCheckedSet = filterCheckedSet,
+//                        selectSet = currencySelectedFilters,
+//                        onBack = { filterActive = false },
+//                        onConfirm = { _ ->
+//                            val selected = mapOf(
+//                                "sessions" to filterCheckedSet.getSelectedList("sessions"),
+//                                "districts" to filterCheckedSet.getSelectedList("districts"),
+//                                "genders" to filterCheckedSet.getSelectedList("genders"),
+//                                "religions" to filterCheckedSet.getSelectedList("religions"),
+//                                "categories" to filterCheckedSet.getSelectedList("categories")
+//
+//                            )
+//
+//                            SchoolDataHolder.currencySelectedFilters = selected
+//                            viewModel.onUpdateFilter(selected)
+//                            filterActive = false
+//                            currencySelectedFilters= emptyMap()
+//                            val intent = Intent(context, MainActivity::class.java)
+//                            (context as? Activity)?.finish()
+//                            context.startActivity(intent)
+//                        },
+//                        clarAll = {
+//                            currencySelectedFilters = emptyMap()
+//                            SchoolDataHolder.currencySelectedFilters = emptyMap()
+//                        }
+//                    )
                     FilterPanelApp(
-                        filterCheckedSet = filterCheckedSet,
-                        selectSet = currencySelectedFilters,
-                        onBack = { filterActive = false },
-                        onConfirm = { _ ->
-                            val selected = mapOf(
-                                "sessions" to filterCheckedSet.getSelectedList("sessions"),
-                                "districts" to filterCheckedSet.getSelectedList("districts"),
-                                "genders" to filterCheckedSet.getSelectedList("genders"),
-                                "religions" to filterCheckedSet.getSelectedList("religions"),
-                                "categories" to filterCheckedSet.getSelectedList("categories")
-                            )
+                        filterCheckedSet=filterCheckedSet,
+                        selectSet=currencySelectedFilters,
+                        onBack = {
 
-                            SchoolDataHolder.currencySelectedFilters = selected
-                            viewModel.onUpdateFilter(selected)
                             filterActive = false
+                        },
+                        onConfirm = { selected ->
+                            SchoolDataHolder.currencySelectedFilters = selected
+
+
+                            viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
+                            filterActive = false
+//                            currencySelectedFilters= emptyMap()
 
                             val intent = Intent(context, MainActivity::class.java)
-                            (context as? Activity)?.finish()
                             context.startActivity(intent)
-                        },
-                        clarAll = {
+                            (context as? Activity)?.finish()
+
+
+                        },clarAll={
                             currencySelectedFilters = emptyMap()
                             SchoolDataHolder.currencySelectedFilters = emptyMap()
                         }
+
                     )
                 }
             }
