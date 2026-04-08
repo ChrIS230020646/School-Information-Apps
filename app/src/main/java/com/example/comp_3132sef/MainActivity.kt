@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.room.util.TableInfo
 import androidx.room.util.getColumnIndex
+import androidx.room.util.query
 import com.example.comp_3132sef.data.local.SchoolDataHolder
 import com.example.comp_3132sef.data.local.SchoolEntity
 import com.example.comp_3132sef.ui.detail.DetailRow
@@ -60,7 +61,10 @@ class MainActivity : ComponentActivity() {
                 val queryText = SchoolDataHolder.query?: ""
                 val filters = SchoolDataHolder.currencySelectedFilters ?: emptyMap()
                 SearchSchoolViewModel.onUpdateFilter(filters)
+                SearchSchoolViewModel.onSearchQueryChange(SchoolDataHolder.query.trim())
 
+
+//                SearchSchoolViewModel.clearQuery()
 
                 Surface(modifier = Modifier.fillMaxSize()) {
 
@@ -208,7 +212,7 @@ fun searchResultScreen(
 
         LaunchedEffect(SchoolDataHolder.query, SchoolDataHolder.currencySelectedFilters) {
             Log.d(TAG, "Initializing Search Results with Holder Data")
-            searchSchoolViewModel.onSearchQueryChange(SchoolDataHolder.query)
+            searchSchoolViewModel.onSearchQueryChange(SchoolDataHolder.query.trim())
             searchSchoolViewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
         }
 
@@ -272,7 +276,7 @@ fun searchResultScreen(
                         onClick = {
                             searchSchoolViewModel.onSearchQueryChange("")
                             SchoolDataHolder.currencySelectedFilters= emptyMap()
-
+                            SchoolDataHolder.query=""
                             val intent = Intent(context, MainActivity1::class.java)
                             context.startActivity(intent)
                             (context as? Activity)?.finish()
@@ -292,6 +296,7 @@ fun searchResultScreen(
                     onClickResultChange = { onClickResult = it },
                     onSelectSchoolChange = { selectSchool = it },
                     onSearch = {
+
                         filterActive = false
                         SchoolDataHolder.isZh = isZh
                         val intent = Intent(context, MainActivity::class.java)

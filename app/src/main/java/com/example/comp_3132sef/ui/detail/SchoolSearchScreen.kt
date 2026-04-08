@@ -49,7 +49,7 @@ fun SchoolSearchScreen(viewModel: SearchSchoolViewModel) {
             OutlinedTextField(
                 value = query,
 
-                onValueChange = { viewModel.onSearchQueryChange(it) },
+                onValueChange = { viewModel.onSearchQueryChange(it.trim()) },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("輸入名稱、地址或電話...") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },

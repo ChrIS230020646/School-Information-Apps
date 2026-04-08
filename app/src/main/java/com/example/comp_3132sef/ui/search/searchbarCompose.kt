@@ -109,7 +109,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 viewModel.clearAllFilters()
                 SchoolDataHolder.currencySelectedFilters=selectedFilters
                 Log.d("FilterLog", "currencySelectedFilters: $currencySelectedFilters")
-//                viewModel.onSearchQueryChange(SchoolDataHolder.query)
+                viewModel.onSearchQueryChange(SchoolDataHolder.query.trim())
                 viewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
                 currencySelectedFilters=selectedFilters
                 SchoolDataHolder.isZh=isZh
@@ -148,9 +148,10 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 .padding(top = if (searchActive) 0.dp else 4.dp)
 //                .fillMaxWidth(if (searchActive) 1f else 0.93f)
                 ,
-            query = query.trim(),
+            query = query,
             onQueryChange = {
-                viewModel.onSearchQueryChange(it)
+                SchoolDataHolder.query= query
+                viewModel.onSearchQueryChange(it.trim())
                  },
             onSearch = {
 //                searchActive = false
@@ -206,6 +207,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
 //                        if (!query.isNotEmpty())
 //                        searchActive = false
                         viewModel.onSearchQueryChange("")
+                        SchoolDataHolder.query=""
                         onSearchActiveChange(false)
                     }
                     ) {

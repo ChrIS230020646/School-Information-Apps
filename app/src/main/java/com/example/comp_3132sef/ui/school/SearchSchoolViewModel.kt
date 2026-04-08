@@ -55,6 +55,9 @@ class SearchSchoolViewModel(application: Application) : AndroidViewModel(applica
     fun onSearchQueryChange(newQuery: String) {
         _searchQuery.value = newQuery
     }
+    fun clearQuery() {
+        _searchQuery.value = ""
+    }
     fun onUpdateFilter(filter: Map<String, List<String>>) {
         _searchFilter.value = filter
     }

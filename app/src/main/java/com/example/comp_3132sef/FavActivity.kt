@@ -208,7 +208,7 @@ fun searchResultScreen2(
     // 使用 LaunchedEffect 確保只在進入此頁面時設定一次 ViewModel 狀態
     LaunchedEffect(SchoolDataHolder.query, SchoolDataHolder.currencySelectedFilters) {
         Log.d(TAG, "Initializing Search Results with Holder Data")
-        searchSchoolViewModel.onSearchQueryChange(SchoolDataHolder.query)
+        searchSchoolViewModel.onSearchQueryChange(SchoolDataHolder.query.trim())
         searchSchoolViewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
     }
 
