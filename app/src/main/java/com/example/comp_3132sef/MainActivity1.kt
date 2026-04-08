@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -100,7 +101,10 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
                 Box(
                     modifier = Modifier
                         .shadow(8.dp, RoundedCornerShape(12.dp))
-                        .background(Color.White, RoundedCornerShape(12.dp))
+                        .background(
+
+              if (isSystemInDarkTheme()) Color.Black else Color.White
+                            , RoundedCornerShape(12.dp))
                         .clickable { MoveToFavPage(context) }
                         .fillMaxWidth(0.85f)
                         .height(540.dp)
@@ -111,6 +115,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
+
                         ) {
                             Text(
                                 text = stringResource(id = R.string.favourites),

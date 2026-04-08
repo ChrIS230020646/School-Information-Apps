@@ -2,6 +2,7 @@ package com.example.comp_3132sef.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -59,10 +60,14 @@ fun FavItemList(viewModel: SchoolViewModel) {
                     .fillMaxWidth(0.95f)
 
                     .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
-                    .background(color = Color.White, shape = RoundedCornerShape(12.dp))
+                    .background(color = ( if (isSystemInDarkTheme()) Color(0xFF2A2A2A) else Color(0xFFFFFFFF)), shape = RoundedCornerShape(12.dp))
                     .border(
                         width = 1.dp,
-                        color = Color(0xFFEEEEEE),
+                        color =
+
+
+                            ( if (isSystemInDarkTheme()) Color(0xFF2A2A2A) else Color(0xFFFFFFFF))
+                            ,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .padding(16.dp, top = 8.dp, end = 8.dp)
@@ -71,6 +76,8 @@ fun FavItemList(viewModel: SchoolViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(end = 32.dp)
+                        .background(
+                             if (isSystemInDarkTheme()) Color(0xFF2A2A2A) else Color(0xFFFFFFFF))
                     ,
 //                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween

@@ -97,6 +97,8 @@ fun SchoolDetailScreen(
     val Session = if (isZh) (school.chineseSession ?: school.session)
     else school.session
     val isDarkTheme = isSystemInDarkTheme()
+    val BackgroundColor = if (isDarkTheme) Color.Black else Color.White
+
     val headerBackgroundColor = if (isDarkTheme) Color.Gray else Color.DarkGray
     val headerTextColor = Color.White
     var currentLocale by remember(SchoolDataHolder.isZh) {
@@ -111,7 +113,7 @@ fun SchoolDetailScreen(
         LocalConfiguration provides configuration,
         LocalContext provides localizedContext
     ) {
-    Column {
+    Column (Modifier.background(BackgroundColor)){
         Row(
             modifier = Modifier
                 .fillMaxWidth()
