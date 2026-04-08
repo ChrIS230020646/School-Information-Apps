@@ -136,7 +136,7 @@ fun FilterPanelApp(
                         modifier = Modifier.weight(1f),
                         onClick = onBack
                     ) {
-                        Text(if (isZh) "返回" else "Back")
+                        Text(text = stringResource(id = R.string.back))
                     }
 
                     // CONFIRM BUTTON
@@ -155,7 +155,7 @@ fun FilterPanelApp(
                         }
 
                     ) {
-                        Text(if (isZh) "搜尋" else "Search")
+                        Text(text = stringResource(id = R.string.search))
                     }
                 }
             }
@@ -188,7 +188,7 @@ fun FilterPanelApp(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        SectionHeader(if(isZh) "授課時間" else "Session")
+                        SectionHeader(title = stringResource(id = R.string.Session_header))
 
                         Icon(
                             imageVector = if (isSessionExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,

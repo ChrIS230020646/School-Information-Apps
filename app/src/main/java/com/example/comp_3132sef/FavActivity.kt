@@ -261,13 +261,12 @@ fun searchResultScreen2(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .statusBarsPadding() // 避免被狀態欄擋住
+                .statusBarsPadding()
                 .background(headerBackgroundColor),
                  verticalAlignment = Alignment.CenterVertically
-//                .padding(horizontal = 4.dp),
-//            verticalAlignment = Alignment.CenterVertically
+
         ) {
-//            if(!searchActive && !filterActive )
+
             IconButton(onClick = { (context as? Activity)?.finish() }) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "返回",
                 tint = Color.White)

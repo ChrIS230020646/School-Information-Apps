@@ -13,6 +13,7 @@
     <string name="District" >District</string>
     <string name="Religion" >Religion</string>
     <string name="Category" >Category</string>
+    <string name="Session_header" >Session</string>
     <string name="Session" >School Session</string>
     <string name="search_placeholder">Search schools...</string>
     <string name="btn_clear_all">Clear All</string>

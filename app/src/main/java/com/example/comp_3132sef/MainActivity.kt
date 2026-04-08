@@ -155,7 +155,7 @@ fun searchResultScreen(
     viewModel: SchoolViewModel ,
     searchSchoolViewModel:SearchSchoolViewModel,
 //    back: () -> Unit
-){
+) {
     val TAG = "DebugMove" // 定義 Log 標籤
     var isZh = SchoolDataHolder.isZh
     var searchActive by remember { mutableStateOf(false) }
@@ -175,180 +175,126 @@ fun searchResultScreen(
         LocalConfiguration provides configuration,
         LocalContext provides localizedContext
     ) {
-    LaunchedEffect(onClickResult) {
-        if (onClickResult) {
-            if (selectSchool != null) {
-                Log.d(TAG, "準備跳轉！目標 ID: ${selectSchool!!.id}")
-                try {
-                    SchoolDataHolder.selectedSchool = selectSchool
-                    SchoolDataHolder.isZh=isZh
+        LaunchedEffect(onClickResult) {
+            if (onClickResult) {
+                if (selectSchool != null) {
+                    Log.d(TAG, "selectSchool ID: ${selectSchool!!.id}")
+                    try {
+                        SchoolDataHolder.selectedSchool = selectSchool
+                        SchoolDataHolder.isZh = isZh
 
-                    val intent = Intent(context, SearchResultActivity::class.java)
+                        val intent = Intent(context, SearchResultActivity::class.java)
 
-                    context.startActivity(intent)
+                        context.startActivity(intent)
 
-                    Log.d(TAG, "startActivity 已執行")
-                } catch (e: Exception) {
-                    Log.e(TAG, "跳轉失敗: ${e.message}")
-                } finally {
-                    onClickResult = false // 重置狀態
-                    searchActive=false
+                        Log.d(TAG, "startActivity run")
+                    } catch (e: Exception) {
+                        Log.e(TAG, "[warn] can't jump: ${e.message}")
+                    } finally {
+                        onClickResult = false // 重置狀態
+                        searchActive = false
+                    }
+                } else {
+                    Log.w(TAG, "[warn] selectSchool null")
+                    onClickResult = false
                 }
-            } else {
-                Log.w(TAG, "onClickResult 為 true 但 selectSchool 是空的，跳轉取消")
-                onClickResult = false
             }
         }
-    }
 
-    // 使用 LaunchedEffect 確保只在進入此頁面時設定一次 ViewModel 狀態
-    LaunchedEffect(SchoolDataHolder.query, SchoolDataHolder.currencySelectedFilters) {
-        Log.d(TAG, "Initializing Search Results with Holder Data")
-        searchSchoolViewModel.onSearchQueryChange(SchoolDataHolder.query)
-        searchSchoolViewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
-    }
+        LaunchedEffect(SchoolDataHolder.query, SchoolDataHolder.currencySelectedFilters) {
+            Log.d(TAG, "Initializing Search Results with Holder Data")
+            searchSchoolViewModel.onSearchQueryChange(SchoolDataHolder.query)
+            searchSchoolViewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
+        }
 
-    // 觀察結果
-    val searchResults by searchSchoolViewModel.searchResults.collectAsState()
-    val favorites by viewModel.favorites.collectAsState()
-    Box(modifier = Modifier
+        // 觀察結果
+        val searchResults by searchSchoolViewModel.searchResults.collectAsState()
+        val favorites by viewModel.favorites.collectAsState()
+        Box(
+            modifier = Modifier
 //                .height((16 * 25).dp)
-        .padding(16.dp,)
-        .padding(top = 120.dp, start =24.dp,end =4.dp),
+                .padding(16.dp,)
+                .padding(top = 120.dp, start = 24.dp, end = 4.dp),
 
-        contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center,
 
 
-        ){
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
 //            .statusBarsPadding()
-            ,
+                ,
 
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp) // 卡片間距
-        ) {
-            items(searchResults) { school ->
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    // 點擊卡片跳轉詳情
-                    SchoolCard(school, onClick = {
-                        selectSchool = school
-                        onClickResult = true
-                    })
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp) // 卡片間距
+            ) {
+                items(searchResults) { school ->
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        // 點擊卡片跳轉詳情
+                        SchoolCard(school, onClick = {
+                            selectSchool = school
+                            onClickResult = true
+                        })
 
-                    // 收藏按鈕 (疊加在右上方或放在 Row 裡)
-                    val favKey = school.englishName ?: ""
-                    IconButton(
-                        onClick = { viewModel.toggleFavorite(favKey) },
-                        modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)
-                    ) {
-                        Icon(
-                            imageVector = if (favorites.contains(favKey)) Icons.Filled.Star else Icons.Outlined.StarBorder,
-                            contentDescription = "Favorite",
-                            tint = if (favorites.contains(favKey)) Color(0xFFFFC107) else Color.Gray
-                        )
+
+                        val favKey = school.englishName ?: ""
+                        IconButton(
+                            onClick = { viewModel.toggleFavorite(favKey) },
+                            modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = if (favorites.contains(favKey)) Icons.Filled.Star else Icons.Outlined.StarBorder,
+                                contentDescription = "Favorite",
+                                tint = if (favorites.contains(favKey)) Color(0xFFFFC107) else Color.Gray
+                            )
+                        }
                     }
                 }
             }
-        }}
-    Column(modifier = Modifier.fillMaxSize()) {
+        }
+        Column(modifier = Modifier.fillMaxSize()) {
 
-        // --- 頂部欄區域 ---
-        Row(
-            modifier = Modifier
-            .fillMaxWidth()
-            .statusBarsPadding() // 避免被狀態欄擋住
-//                .padding(horizontal = 4.dp),
-//            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if(!searchActive && !filterActive )
-            IconButton(onClick = {
-                val intent = Intent(context, MainActivity1::class.java)
-                context.startActivity(intent)
-                (context as? Activity)?.finish()
-            }) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+
+            ) {
+                if (!searchActive && !filterActive)
+                    IconButton(
+                        modifier = Modifier.padding(top = 16.dp),
+                        onClick = {
+                            val intent = Intent(context, MainActivity1::class.java)
+                            context.startActivity(intent)
+                            (context as? Activity)?.finish()
+                        }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                    }
+
+                searchBarCompose(
+                    searchSchoolViewModel,
+                    searchActive,
+                    filterActive,
+                    onClickResult,
+                    selectSchool,
+                    isZh,
+                    onSearchActiveChange = { searchActive = it },
+                    onfilterActiveChange = { filterActive = it },
+                    onClickResultChange = { onClickResult = it },
+                    onSelectSchoolChange = { selectSchool = it },
+                    onSearch = {
+                        filterActive = false
+                        SchoolDataHolder.isZh = isZh
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                        (context as? Activity)?.finish()
+                    }
+                )
+
             }
-
-        searchBarCompose(
-            searchSchoolViewModel,
-            searchActive,
-            filterActive,
-            onClickResult,
-            selectSchool,
-            isZh,
-            onSearchActiveChange = { searchActive = it },
-            onfilterActiveChange = { filterActive = it },
-            onClickResultChange = { onClickResult = it },
-            onSelectSchoolChange = { selectSchool = it },
-            onSearch = {
-                filterActive=false
-                SchoolDataHolder.isZh=isZh
-                val intent = Intent(context, MainActivity::class.java)
-                context.startActivity(intent)
-                (context as? Activity)?.finish()
-            }
-        )
-
-}}
+        }
 
     }
 
-//    Box(modifier = Modifier.fillMaxSize()) {
-//        // 1. Your main screen content (List, Column, etc.)
-//
-//        // 2. The FAB placed manually
-//        FloatingActionButton(
-//            onClick = {
-//                try {
-////                    // 1. Create the Intent
-////                    val intent = Intent(context, SearchActivity::class.java).apply {
-////                        putExtra("EXTRA_DATA", "Hello from Compose!")
-////                    }
-//                    (context as? Activity)?.finish()
-//                    // 2. Try to start the Activity
-////                    context.startActivity(intent)
-//
-//                } catch (e: Exception) {
-//                    // 3. Handle the "problem"
-//                    // This logs it to your Logcat for debugging
-//                    Log.e("NavigationError", "Failed to launch HomeActivity", e)
-//
-//                    // This shows a popup to the user so they know something went wrong
-//                    Toast.makeText(
-//                        context,
-//                        "Error: ${e.localizedMessage}",
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                }
-//
-//            },
-//            modifier = Modifier
-//                .align(Alignment.TopEnd) // Put it in the top right!
-//                .padding(top = 40.dp, end = 16.dp)
-//        ) {
-//            Icon(Icons.Default.ArrowBack, contentDescription = "返回")
-//        }
-//    }
 }
-
-
-//@Composable
-//fun MainScreen(
-//    viewModel: SchoolViewModel,
-//
-//) {
-//
-//    val selectedSchool by viewModel.selectedSchool.collectAsState()
-//
-//    if (selectedSchool != null) {
-//        Column {
-//            SchoolDetailScreen(
-//                school = selectedSchool!!,
-//                onBack = { viewModel.closeSchoolMap() }
-//            )
-//        }
-//    } else {
-//        SchoolListScreen(viewModel)
-//    }
-//}

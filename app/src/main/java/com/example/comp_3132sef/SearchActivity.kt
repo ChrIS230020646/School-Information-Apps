@@ -18,13 +18,10 @@ class SearchActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Note: You should ideally initialize your Room DB in a Singleton
-        // or Application class, not directly in the Activity.
+
 
         setContent {
             // Use your app's custom theme
-//            COMP_3132SEFTheme {
-                // A surface container using the 'background' color from the theme
             val schoolVm: SchoolViewModel = viewModel()
             COMP_3132SEFTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {

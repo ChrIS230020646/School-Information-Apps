@@ -48,12 +48,9 @@ class MainActivity1 : ComponentActivity() {
             val schoolVm: SchoolViewModel = viewModel()
             COMP_3132SEFTheme {
             Surface(color = MaterialTheme.colorScheme.background) {
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
+
                     SearchBarScreen(searchVm, schoolVm)
-//                }
+
             }
         }
         }
@@ -63,12 +60,10 @@ class MainActivity1 : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewModel) {
-    val TAG = "LocaleDebug"
-    // 這是原始的 Activity Context，用於 startActivity 確保不崩潰
+
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    // --- 語系狀態管理 ---
     var currentLocale by remember(SchoolDataHolder.isZh) {
         mutableStateOf(if (SchoolDataHolder.isZh) Locale("zh", "HK") else Locale.ENGLISH)
     }
@@ -76,10 +71,8 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
     val configuration = Configuration(LocalConfiguration.current).apply {
         setLocale(currentLocale)
     }
-    // 這是用於顯示語系的 Context
     val localizedContext = context.createConfigurationContext(configuration)
 
-    // --- UI 狀態 ---
     var filterActive by remember { mutableStateOf(false) }
     var onClickResult by remember { mutableStateOf(false) }
     var selectSchool by remember { mutableStateOf<SchoolEntity?>(null) }
@@ -89,11 +82,9 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
         LocalConfiguration provides configuration,
         LocalContext provides localizedContext
     ) {
-        // 監聽單個學校跳轉 (SearchResultActivity)
         LaunchedEffect(onClickResult) {
             if (onClickResult && selectSchool != null) {
                 SchoolDataHolder.selectedSchool = selectSchool
-                // 核心修復：使用原始 context 跳轉
                 context.startActivity(Intent(context, SearchResultActivity::class.java))
                 onClickResult = false
             }
@@ -101,7 +92,6 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
 
         Box(modifier = Modifier.fillMaxSize()) {
 
-            // 1. 背景層：收藏卡片 (置中偏上)
             Row(
                 verticalAlignment = BiasAlignment.Vertical(0.1f),
                 horizontalArrangement = Arrangement.Center,
@@ -137,20 +127,16 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
                 }
             }
 
-            // 2. 前景層：控制區域 (頂部操作列)
             Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
 
-                // 頂部橫列：左邊切換語系，右邊功能按鈕
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // 左上角：語系切換
                     TextButton(onClick = {
                         val targetIsZh = !SchoolDataHolder.isZh
                         SchoolDataHolder.isZh = targetIsZh
-                        // 這會觸發 remember(SchoolDataHolder.isZh) 重新組合
                     }) {
                         Text(text = stringResource(id = R.string.language))
                     }
@@ -183,7 +169,6 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
                     }
                 }
 
-                // 推開中間空間
                 Spacer(modifier = Modifier.weight(1f))
 
                 // 3. 篩選面板 (當開啟時)
@@ -196,7 +181,6 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
                         selectSet = currencySelectedFilters,
                         onBack = { filterActive = false },
                         onConfirm = { _ ->
-                            // 修復點：從 filterCheckedSet 獲取所有勾選的內容並存入 DataHolder
                             val selected = mapOf(
                                 "sessions" to filterCheckedSet.getSelectedList("sessions"),
                                 "districts" to filterCheckedSet.getSelectedList("districts"),
@@ -209,14 +193,12 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
                             viewModel.onUpdateFilter(selected)
                             filterActive = false
 
-                            // 重啟主頁以刷新列表內容
                             val intent = Intent(context, MainActivity::class.java)
                             (context as? Activity)?.finish()
                             context.startActivity(intent)
                         },
                         clarAll = {
                             currencySelectedFilters = emptyMap()
-                            // 同時清空 DataHolder 內緩存的過濾條件
                             SchoolDataHolder.currencySelectedFilters = emptyMap()
                         }
                     )

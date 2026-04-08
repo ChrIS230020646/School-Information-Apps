@@ -34,24 +34,21 @@ import com.example.comp_3132sef.ui.school.SchoolViewModel
 
 @Composable
 fun FavItemList(viewModel: SchoolViewModel) {
-    // 1. 觀察 ViewModel 中的 StateFlow
-    // 加上 initial = emptyList() 確保初始狀態安全
+
 //    val favorites by viewModel.favorites.collectAsState()
     val favoritesInfo by viewModel.favoriteSchoolEntities.collectAsState()
-    // 2. 使用 LazyColumn 建立列表
     var isZh=SchoolDataHolder.isZh
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
             4.dp
             ,top = 0.dp
-            //16.dpf
 
-        ), // 列表四周留白
+        ),
 
-        verticalArrangement = Arrangement.spacedBy(16.dp) // 項目之間的間距
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // 3. 渲染列表項目
+
         items(favoritesInfo.toList()) {
                 favorite ->
             val displayName =
@@ -60,7 +57,7 @@ fun FavItemList(viewModel: SchoolViewModel) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.95f)
-//                    .aspectRatio(1f)
+
                     .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
                     .background(color = Color.White, shape = RoundedCornerShape(12.dp))
                     .border(
@@ -78,7 +75,6 @@ fun FavItemList(viewModel: SchoolViewModel) {
 //                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // 顯示 Set 中的字串內容
                     Text(
                         text = displayName,
                         style = MaterialTheme.typography.bodyLarge,
@@ -86,20 +82,17 @@ fun FavItemList(viewModel: SchoolViewModel) {
                         fontSize = 12.sp
                         ,lineHeight = 14.sp,
 
-                        fontWeight = FontWeight.Bold,     // 設定為粗體
-//                        style = MaterialTheme.typography.titleLarge // 或者使用內建的主題樣式
+                        fontWeight = FontWeight.Bold,
                     )
 
 
 
                 }
-                // 右側的星星按鈕
                 IconButton(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                     ,
                     onClick = {
-                        // 呼叫刪除邏輯，例如：viewModel.toggleFavorite(schoolName)
                         viewModel.toggleFavorite(favorite.englishName)
 
                     }

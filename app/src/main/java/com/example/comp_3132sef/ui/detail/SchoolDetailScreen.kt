@@ -128,7 +128,6 @@ fun SchoolDetailScreen(
                 )
             }
 
-            // 2. 標題 (使用 weight 佔滿中間空間，將 Fav Button 推向右邊)
             Text(
                 text = SchoolName,
                 fontWeight = FontWeight.Bold,
