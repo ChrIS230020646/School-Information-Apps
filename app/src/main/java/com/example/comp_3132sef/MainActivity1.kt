@@ -37,6 +37,7 @@ import com.example.comp_3132sef.ui.school.SchoolViewModel
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
 import com.example.comp_3132sef.ui.search.FilterPanelApp
 import com.example.comp_3132sef.ui.search.rememberFilterCheckedSet
+import com.example.comp_3132sef.ui.theme.COMP_3132SEFTheme
 import java.util.Locale
 
 class MainActivity1 : ComponentActivity() {
@@ -45,15 +46,16 @@ class MainActivity1 : ComponentActivity() {
         setContent {
             val searchVm: SearchSchoolViewModel = viewModel()
             val schoolVm: SchoolViewModel = viewModel()
-
-            MaterialTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
+            COMP_3132SEFTheme {
+            Surface(color = MaterialTheme.colorScheme.background) {
+//                Surface(
+//                    modifier = Modifier.fillMaxSize(),
+//                    color = MaterialTheme.colorScheme.background
+//                ) {
                     SearchBarScreen(searchVm, schoolVm)
-                }
+//                }
             }
+        }
         }
     }
 }

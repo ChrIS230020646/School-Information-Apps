@@ -52,6 +52,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val viewModel: SchoolViewModel = viewModel()
             val SearchSchoolViewModel:SearchSchoolViewModel= viewModel()
+            Surface(color = MaterialTheme.colorScheme.background) {
             COMP_3132SEFTheme {
 
                 // 使用更安全的判斷方式 (Use safer null checks)
@@ -61,16 +62,12 @@ class MainActivity : ComponentActivity() {
 
 
                 Surface(modifier = Modifier.fillMaxSize()) {
-//                    if (hasFilter || hasQuery) {
-//                        Log.d("DebugMove", "Mode: Search Result (Q: '$queryText', F: ${filters.size})")
+
                         searchResultScreen(viewModel,SearchSchoolViewModel)
-//                    } else {
-//                        Log.d("DebugMove", "Mode: Main List (Displaying all items)")
-////                        MainScreen(viewModel)
-//                        searchResultScreen(viewModel,SearchSchoolViewModel)
-//                    }
+
                 }
             }
+        }
         }
     }
 }
@@ -103,11 +100,12 @@ fun SchoolCard(school: SchoolEntity,onClick: ()->Unit) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 
-
+            Box(modifier = Modifier.padding(end = 16.dp)) {
             displayName1.let {
                 if (!(it.isEmpty())) {
                     Text(text = it, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 }
+            }
             }
             if (displayName2 != null) {
                 Text(text = displayName2, fontSize = 14.sp, color = Color.Gray)

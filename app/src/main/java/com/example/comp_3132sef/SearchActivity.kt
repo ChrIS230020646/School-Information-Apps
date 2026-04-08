@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.comp_3132sef.ui.detail.SchoolSearchScreen
+import com.example.comp_3132sef.ui.school.SchoolViewModel
 import com.example.comp_3132sef.ui.school.SearchSchoolViewModel
+import com.example.comp_3132sef.ui.theme.COMP_3132SEFTheme
 
 class SearchActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,13 +25,12 @@ class SearchActivity : ComponentActivity() {
             // Use your app's custom theme
 //            COMP_3132SEFTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
+            val schoolVm: SchoolViewModel = viewModel()
+            COMP_3132SEFTheme {
+                Surface(color = MaterialTheme.colorScheme.background) {
                     HomeMainScreen()
                 }
-//            }
+            }
         }
     }
 }

@@ -42,6 +42,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,6 +51,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,14 +64,17 @@ import com.google.android.gms.tasks.CancellationTokenSource
 
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.comp_3132sef.R
 import com.example.comp_3132sef.data.local.SchoolDataHolder
+import com.example.comp_3132sef.ui.school.SchoolViewModel
 import java.util.Locale
 
 @Composable
 fun SchoolDetailScreen(
     school: SchoolEntity,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    viewModel: SchoolViewModel= viewModel()
 ) {
     val context = LocalContext.current
     var isZh=SchoolDataHolder.isZh
@@ -117,19 +123,34 @@ fun SchoolDetailScreen(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = R.string.back.toString(),
+                    contentDescription = stringResource(R.string.back),
                     tint = Color.White
                 )
             }
+
+            // 2. 標題 (使用 weight 佔滿中間空間，將 Fav Button 推向右邊)
             Text(
                 text = SchoolName,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
-                modifier = Modifier.padding(bottom = 8.dp),
                 color = headerTextColor,
-                maxLines = 1, // Limits the text to exactly one line
-                overflow = TextOverflow.Ellipsis // Adds the "..." at the end
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
             )
+
+            val favKey = school.englishName ?: ""
+            val favorites by viewModel.favorites.collectAsState()
+
+            IconButton(
+                onClick = { viewModel.toggleFavorite(favKey) }
+            ) {
+                Icon(
+                    imageVector = if (favorites.contains(favKey)) Icons.Filled.Star else Icons.Outlined.StarBorder,
+                    contentDescription = "Favorite",
+                    tint = if (favorites.contains(favKey)) Color(0xFFFFC107) else Color.White
+                )
+            }
         }
         Column(
             modifier = Modifier

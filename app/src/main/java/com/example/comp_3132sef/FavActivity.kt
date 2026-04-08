@@ -51,6 +51,7 @@ class FavActivity : ComponentActivity() {
         setContent {
             val viewModel: SchoolViewModel = viewModel()
             val SearchSchoolViewModel:SearchSchoolViewModel= viewModel()
+            Surface(color = MaterialTheme.colorScheme.background) {
             COMP_3132SEFTheme {
 
                 // 使用更安全的判斷方式 (Use safer null checks)
@@ -70,6 +71,7 @@ class FavActivity : ComponentActivity() {
                         searchResultScreen2(viewModel,SearchSchoolViewModel)
                     }
                 }
+            }
             }
         }
     }
@@ -104,9 +106,11 @@ fun SchoolCard2(school: SchoolEntity,onClick: ()->Unit) {
         Column(modifier = Modifier.padding(16.dp)) {
 
 
-            displayName1.let {
-                if (!(it.isEmpty())) {
-                    Text(text = it, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Box(modifier = Modifier.padding(end = 16.dp)) {
+                displayName1.let {
+                    if (!(it.isEmpty())) {
+                        Text(text = it, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
             if (displayName2 != null) {
@@ -230,13 +234,13 @@ fun searchResultScreen2(
         ) {
             items(favoritesInfo) { school ->
                 Box(modifier = Modifier.fillMaxWidth()) {
-                    // 點擊卡片跳轉詳情
+
                     SchoolCard2(school, onClick = {
                         selectSchool = school
                         onClickResult = true
                     })
 
-                    // 收藏按鈕 (疊加在右上方或放在 Row 裡)
+
                     val favKey = school.englishName ?: ""
                     IconButton(
                         onClick = { viewModel.toggleFavorite(favKey) },
