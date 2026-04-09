@@ -29,11 +29,11 @@ class SearchSchoolViewModel(application: Application) : AndroidViewModel(applica
     private val schoolDao = db.schoolDao()
 //@OptIn(ExperimentalCoroutinesApi::class)
     val searchResults = combine(_searchQuery, _searchFilter) { query, filters ->
-        // 這裡把兩個值打包，傳給下一層
+
         Pair(query, filters)
     }.flatMapLatest { (query, filters) ->
     Log.d("Debug", "schoolDao")
-        // 呼叫更新後的 DAO (記得去 DAO 把參數補上)
+
         schoolDao.searchSchoolsWithFilters(
             query = query,
             sessions = filters["sessions"].takeIf { !it.isNullOrEmpty() },

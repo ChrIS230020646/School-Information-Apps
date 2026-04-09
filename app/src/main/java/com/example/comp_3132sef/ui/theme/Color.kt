@@ -14,5 +14,5 @@ val PrimaryBlue = Color(0xFF1976D2)
 val SecondaryGray = Color(0xFF757575)
 val BackgroundLight = Color(0xFFF5F5F5)
 val SurfaceDark = Color(0xFF121212)
-// 你可以為深色模式定義另一組
+
 val PrimaryBlueLight = Color(0xFF47A1F5)

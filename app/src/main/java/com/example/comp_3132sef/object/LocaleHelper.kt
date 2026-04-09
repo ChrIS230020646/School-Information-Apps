@@ -12,7 +12,7 @@ object LocaleHelper {
         val config = context.resources.configuration
         config.setLocale(locale)
 
-        // 核心：使用 createConfigurationContext 產生新的 Context
+
         val newContext = context.createConfigurationContext(config)
         return ContextWrapper(newContext)
     }

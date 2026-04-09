@@ -12,7 +12,7 @@ class FilterState(
 ) {
     enum class FilterType { SESSION, GENDER, RELIGION, CATEGORY, DISTRICT }
 
-    // Setter: 更新特定類別的勾選狀態
+    // Setter:
     fun updateChecked(type: FilterType, index: Int, isChecked: Boolean) {
         val currentGroup = when (type) {
             FilterType.SESSION -> session

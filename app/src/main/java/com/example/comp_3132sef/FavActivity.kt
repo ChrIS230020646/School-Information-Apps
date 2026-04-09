@@ -44,7 +44,7 @@ import com.example.comp_3132sef.ui.search.searchBarCompose
 
 class FavActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val TAG = "DebugMove" // 定義 Log 標籤
+        val TAG = "DebugMove"
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,7 +54,7 @@ class FavActivity : ComponentActivity() {
             Surface(color = MaterialTheme.colorScheme.background) {
             COMP_3132SEFTheme {
 
-                // 使用更安全的判斷方式 (Use safer null checks)
+                //  (Use safer null checks)
                 val queryText = SchoolDataHolder.query?: ""
                 val filters = SchoolDataHolder.currencySelectedFilters ?: emptyMap()
 
@@ -163,7 +163,7 @@ fun searchResultScreen2(
     val headerBackgroundColor = if (isDarkTheme) Color.Gray else Color.DarkGray
     val headerTextColor = Color.White
     val favoritesInfo by viewModel.favoriteSchoolEntities.collectAsState()
-    val TAG = "DebugMove" // 定義 Log 標籤
+    val TAG = "DebugMove"
 
     var onClickResult by remember { mutableStateOf(false) }
     var selectSchool by remember { mutableStateOf<SchoolEntity?>(null) }
@@ -195,7 +195,7 @@ fun searchResultScreen2(
                 } catch (e: Exception) {
                     Log.e(TAG, "跳轉失敗: ${e.message}")
                 } finally {
-//                    onClickResult = false // 重置狀態
+//                    onClickResult = false
 //                    searchActive=false
                 }
             } else {
@@ -205,14 +205,14 @@ fun searchResultScreen2(
         }
     }
 
-    // 使用 LaunchedEffect 確保只在進入此頁面時設定一次 ViewModel 狀態
+
     LaunchedEffect(SchoolDataHolder.query, SchoolDataHolder.currencySelectedFilters) {
         Log.d(TAG, "Initializing Search Results with Holder Data")
         searchSchoolViewModel.onSearchQueryChange(SchoolDataHolder.query.trim())
         searchSchoolViewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
     }
 
-    // 觀察結果
+
     val searchResults by searchSchoolViewModel.searchResults.collectAsState()
     val favorites by viewModel.favorites.collectAsState()
     Box(modifier = Modifier
@@ -230,7 +230,7 @@ fun searchResultScreen2(
             ,
 
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp) // 卡片間距
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(favoritesInfo) { school ->
                 Box(modifier = Modifier.fillMaxWidth()) {
@@ -257,7 +257,7 @@ fun searchResultScreen2(
         }}
     Column(modifier = Modifier.fillMaxSize()) {
 
-        // --- 頂部欄區域 ---
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -292,7 +292,6 @@ fun searchResultScreen2(
 //            onClickResultChange = { onClickResult = it },
 //            onSelectSchoolChange = { selectSchool = it },
 //            onSearch = {
-//                // 執行搜尋邏輯
 //            }
 //        )
 

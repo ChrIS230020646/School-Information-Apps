@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
             Surface(color = MaterialTheme.colorScheme.background) {
             COMP_3132SEFTheme {
 
-                // 使用更安全的判斷方式 (Use safer null checks)
+                //  (Use safer null checks)
                 val queryText = SchoolDataHolder.query?: ""
                 val filters = SchoolDataHolder.currencySelectedFilters ?: emptyMap()
                 SearchSchoolViewModel.onUpdateFilter(filters)
@@ -165,7 +165,7 @@ fun searchResultScreen(
     searchSchoolViewModel:SearchSchoolViewModel,
 //    back: () -> Unit
 ) {
-    val TAG = "DebugMove" // 定義 Log 標籤
+    val TAG = "DebugMove"
     var isZh = SchoolDataHolder.isZh
     var searchActive by remember { mutableStateOf(false) }
     var filterActive by remember { mutableStateOf(false) }
@@ -200,7 +200,7 @@ fun searchResultScreen(
                     } catch (e: Exception) {
                         Log.e(TAG, "[warn] can't jump: ${e.message}")
                     } finally {
-                        onClickResult = false // 重置狀態
+                        onClickResult = false
                         searchActive = false
                     }
                 } else {
@@ -216,7 +216,7 @@ fun searchResultScreen(
             searchSchoolViewModel.onUpdateFilter(SchoolDataHolder.currencySelectedFilters)
         }
 
-        // 觀察結果
+
         val searchResults by searchSchoolViewModel.searchResults.collectAsState()
         val favorites by viewModel.favorites.collectAsState()
         Box(
@@ -235,11 +235,11 @@ fun searchResultScreen(
                 ,
 
                 contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp) // 卡片間距
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(searchResults) { school ->
                     Box(modifier = Modifier.fillMaxWidth()) {
-                        // 點擊卡片跳轉詳情
+
                         SchoolCard(school, onClick = {
                             selectSchool = school
                             onClickResult = true

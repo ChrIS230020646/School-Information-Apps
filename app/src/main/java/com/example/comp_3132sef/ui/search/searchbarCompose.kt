@@ -100,7 +100,6 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 onfilterActiveChange(false)
             },
             onConfirm = { selectedFilters ->
-                // 1. 執行你的搜尋邏輯
                 println("User selected: $selectedFilters")
                 Log.d("FilterLog", "selectedFilters: $selectedFilters")
 
@@ -185,7 +184,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                         onfilterActiveChange(true) },
                 ) {
                     Icon(
-                        imageVector = Icons.Default.FilterList, // 或者用 Icons.Default.Tune
+                        imageVector = Icons.Default.FilterList,
                         contentDescription = R.string.filter.toString(),
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -193,11 +192,11 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
                 if (searchActive) {
 
                     IconButton(onClick = {
-                        // 執行搜尋邏輯
+
                         println("搜尋內容: $query")
                         Log.d("SchoolDataHolder.query=",SchoolDataHolder.query)
                         Log.d("query",query)
-                        keyboardController?.hide() // 隱藏鍵盤
+                        keyboardController?.hide()
                         SchoolDataHolder.query= query
                         Log.d("SchoolDataHolder.query=",SchoolDataHolder.query)
 //                        SchoolDataHolder.currencySelectedFilters=currencySelectedFilters
@@ -235,7 +234,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
             )
             {
                 if (filteredList.isEmpty()) {
-                    // 正確調用擴充函式
+
                     filteredListIsEmpty()
                 }else{
                     items(searchResults) { school ->
@@ -274,7 +273,7 @@ fun searchBarCompose(viewModel:SearchSchoolViewModel,
 }
 
 fun getNameListItemsToLists(inputList: MutableList<String>, list: List<SchoolEntity>, isEnglish: Boolean) {
-    // 使用 forEach 遍歷 schools2，並將名稱加入 inputList
+
     if(isEnglish){
         list.forEach { school ->
             inputList.add(school.englishName)

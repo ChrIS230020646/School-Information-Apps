@@ -146,7 +146,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
                         Text(text = stringResource(id = R.string.language))
                     }
 
-                    // 右上角：搜尋與篩選圖標
+
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         if (!filterActive) {
                             IconButton(onClick = {
@@ -176,7 +176,7 @@ fun SearchBarScreen(viewModel: SearchSchoolViewModel, viewModel2: SchoolViewMode
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                // 3. 篩選面板 (當開啟時)
+
                 if (filterActive) {
                     val viewModel3: FilterViewModel = viewModel()
                     val filterCheckedSet = rememberFilterCheckedSet(viewModel3, SchoolDataHolder.isZh)

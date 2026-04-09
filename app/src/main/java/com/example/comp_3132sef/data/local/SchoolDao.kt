@@ -45,7 +45,7 @@ interface SchoolDao {
     fun searchSchoolsWithFilters(
         query: String?,
         sessions: List<String>?,
-        sessionsCount: Int, // 傳入 list.size
+        sessionsCount: Int,
         genders: List<String>?,
         gendersCount: Int,
         districts: List<String>?,

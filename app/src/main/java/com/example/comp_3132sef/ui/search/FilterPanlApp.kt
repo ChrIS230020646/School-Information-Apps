@@ -95,7 +95,7 @@ fun FilterPanelApp(
             ) {
                 Text(
                     stringResource(id = R.string.Filters)
-//                    text = if (isZh) "篩選器" else "Filters"
+
                     ,
                     style = MaterialTheme.typography.headlineSmall, // Or titleLarge
                     modifier = Modifier.padding(16.dp)
@@ -125,7 +125,7 @@ fun FilterPanelApp(
                         }
                     ) {
                         Text(
-                            //if (isZh) "清除全部" else "Clear All"
+
                                 stringResource(id = R.string.btn_clear_all)
                         )
 //                        stringResource(id = R.string.desc_search_icon)
@@ -175,8 +175,8 @@ fun FilterPanelApp(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
-                        .clickable { isSessionExpanded = !isSessionExpanded } // 點擊整塊區域觸發
+                        .padding(vertical = 4.dp)
+                        .clickable { isSessionExpanded = !isSessionExpanded }
                 ) {
 
 
@@ -184,7 +184,7 @@ fun FilterPanelApp(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -216,8 +216,8 @@ fun FilterPanelApp(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
-                        .clickable { isGenderExpanded = !isGenderExpanded } // 點擊整塊區域觸發
+                        .padding(vertical = 4.dp)
+                        .clickable { isGenderExpanded = !isGenderExpanded }
                 ) {
 
 
@@ -225,7 +225,7 @@ fun FilterPanelApp(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -257,8 +257,8 @@ fun FilterPanelApp(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
-                        .clickable { isDistrictExpanded = !isDistrictExpanded } // 點擊整塊區域觸發
+                        .padding(vertical = 4.dp)
+                        .clickable { isDistrictExpanded = !isDistrictExpanded }
                 ) {
                     // line
 //                    HorizontalDivider(
@@ -270,7 +270,7 @@ fun FilterPanelApp(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -302,8 +302,8 @@ fun FilterPanelApp(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
-                        .clickable { isReligionExpanded = !isReligionExpanded } // 點擊整塊區域觸發
+                        .padding(vertical = 4.dp)
+                        .clickable { isReligionExpanded = !isReligionExpanded }
                 ) {
 //                    // line
 //                    HorizontalDivider(
@@ -315,7 +315,7 @@ fun FilterPanelApp(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -346,15 +346,15 @@ fun FilterPanelApp(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp) // 整個組件與上下內容的間距
-                        .clickable { isCategoryExpanded = !isCategoryExpanded } // 點擊整塊區域觸發
+                        .padding(vertical = 4.dp)
+                        .clickable { isCategoryExpanded = !isCategoryExpanded }
                 ) {
 
                     // context
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 8.dp), // 讓文字與線條有呼吸空間
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {

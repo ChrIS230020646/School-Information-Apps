@@ -45,7 +45,7 @@ fun SchoolSearchScreen(viewModel: SearchSchoolViewModel) {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            // 搜索欄
+
             OutlinedTextField(
                 value = query,
 
@@ -58,7 +58,7 @@ fun SchoolSearchScreen(viewModel: SearchSchoolViewModel) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 結果列表
+
             LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(schools) { school ->
                     SchoolCard(school)
